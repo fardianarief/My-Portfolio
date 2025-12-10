@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, Database, HeartPulse } from 'lucide-react';
+import { fetchSheetData } from '../services/sheetService';
+
+const defaultPhoto = "https://picsum.photos/300/300";
 
 export const Hero: React.FC = () => {
+  const [photoUrl, setPhotoUrl] = useState(defaultPhoto);
+
+  useEffect(() => {
+    const getPhoto = async () => {
+      // Kita coba ambil foto dari sheet Profile jika ada
+      const data: any = await fetchSheetData('Profile');
+      if (data && data.length > 0) {
+        const photoEntry = data.find((row: any) => row.key === 'photoUrl');
+        if (photoEntry && photoEntry.value) {
+            setPhotoUrl(photoEntry.value);
+        }
+      }
+    };
+    getPhoto();
+  }, []);
+
   const scrollToProfile = () => {
     document.getElementById('profile')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -26,7 +45,7 @@ export const Hero: React.FC = () => {
             <div className="relative inline-block mb-8">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-neon-teal to-tech-blue blur opacity-50 animate-pulse"></div>
                 <img 
-                    src="https://picsum.photos/300/300" 
+                    src={photoUrl} 
                     alt="Fardian Arief" 
                     className="relative w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-slate-800 object-cover mx-auto"
                 />

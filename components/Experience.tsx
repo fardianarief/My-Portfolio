@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FadeIn } from './FadeIn';
 import { Calendar, CheckCircle2 } from 'lucide-react';
+import { fetchSheetData } from '../services/sheetService';
 
-const experiences = [
+const defaultExperiences = [
   {
     id: 1,
     role: "Perawat Rawat Inap",
@@ -21,15 +22,31 @@ const experiences = [
     period: "Juni 2024 – sekarang",
     tasks: [
       "Implementor Sistem HIS",
-      "SuperAdmin Management (RBAC, data flow, user control)",
+      "SuperAdmin Management",
       "Educator — pelatihan staf digital",
-      "Verificator Enhancement — validasi & akurasi data",
-      "Workflow Enhancement — optimasi alur kerja digital"
+      "Verificator Enhancement",
+      "Workflow Enhancement"
     ]
   }
 ];
 
 export const Experience: React.FC = () => {
+  const [experiences, setExperiences] = useState<any[]>(defaultExperiences);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data: any = await fetchSheetData('Experience');
+      if (data && data.length > 0) {
+        const formatted = data.map((item: any) => ({
+            ...item,
+            tasks: item.tasks ? item.tasks.split('|').map((t:string) => t.trim()) : []
+        }));
+        setExperiences(formatted);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <section id="experience" className="py-20">
       <div className="container mx-auto px-6">
@@ -44,7 +61,7 @@ export const Experience: React.FC = () => {
             <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-slate-800"></div>
 
             {experiences.map((exp, index) => (
-                <div key={exp.id} className={`relative mb-12 flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} items-center w-full`}>
+                <div key={exp.id || index} className={`relative mb-12 flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} items-center w-full`}>
                     
                     {/* Timeline Dot */}
                     <div className="absolute left-[-5px] md:left-1/2 md:-ml-[11px] w-6 h-6 rounded-full bg-deep-slate border-4 border-neon-teal z-10 shadow-[0_0_10px_#2dd4bf]"></div>
@@ -59,7 +76,7 @@ export const Experience: React.FC = () => {
                                     {exp.period}
                                 </div>
                                 <ul className="space-y-2">
-                                    {exp.tasks.map((task, i) => (
+                                    {exp.tasks.map((task: string, i: number) => (
                                         <li key={i} className="flex items-start gap-2 text-slate-300 text-sm">
                                             <CheckCircle2 size={16} className="text-tech-blue shrink-0 mt-0.5" />
                                             <span>{task}</span>

@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FadeIn } from './FadeIn';
-import { Mail, Instagram, Linkedin, Github, Phone, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
+import { fetchSheetData } from '../services/sheetService';
+import { getIcon } from '../utils/iconMap';
+
+const defaultContacts = [
+    { platform: "WhatsApp", value: "+62 82388308450", link: "https://wa.me/6282388308450", icon: "Phone" },
+    { platform: "Email", value: "fardianarief@gmail.com", link: "mailto:fardianarief@gmail.com", icon: "Mail" },
+    { platform: "Instagram", value: "@fardianarief", link: "https://instagram.com/fardianarief", icon: "Instagram" },
+    { platform: "LinkedIn", value: "linkedin.com/in/fardianarief", link: "https://linkedin.com/in/fardianarief", icon: "Linkedin" },
+    { platform: "GitHub", value: "github.com/fardianarief", link: "https://github.com/fardianarief", icon: "Github" },
+];
 
 export const Contact: React.FC = () => {
+  const [contacts, setContacts] = useState<any[]>(defaultContacts);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data: any = await fetchSheetData('Contact');
+      if (data && data.length > 0) setContacts(data);
+    };
+    getData();
+  }, []);
+
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
       {/* Background glow */}
@@ -25,40 +45,17 @@ export const Contact: React.FC = () => {
               </p>
 
               <div className="space-y-4">
-                <a href="https://wa.me/6282388308450" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
-                    <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
-                         <Phone size={20} />
-                    </div>
-                    <span>+62 82388308450</span>
-                </a>
-                
-                <a href="mailto:fardianarief@gmail.com" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
-                    <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
-                        <Mail size={20} />
-                    </div>
-                    <span>fardianarief@gmail.com</span>
-                </a>
-
-                <a href="https://instagram.com/fardianarief" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
-                    <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
-                        <Instagram size={20} />
-                    </div>
-                    <span>@fardianarief</span>
-                </a>
-
-                <a href="https://linkedin.com/in/fardianarief" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
-                    <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
-                        <Linkedin size={20} />
-                    </div>
-                    <span>linkedin.com/in/fardianarief</span>
-                </a>
-
-                <a href="https://github.com/fardianarief" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
-                    <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
-                        <Github size={20} />
-                    </div>
-                    <span>github.com/fardianarief</span>
-                </a>
+                {contacts.map((contact, idx) => {
+                    const IconComponent = getIcon(contact.icon);
+                    return (
+                        <a key={idx} href={contact.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-neon-teal transition-colors group">
+                            <div className="p-3 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors">
+                                <IconComponent size={20} />
+                            </div>
+                            <span>{contact.value}</span>
+                        </a>
+                    );
+                })}
               </div>
             </div>
           </FadeIn>
