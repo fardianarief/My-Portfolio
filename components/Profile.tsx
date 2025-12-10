@@ -1,0 +1,82 @@
+import React from 'react';
+import { FadeIn } from './FadeIn';
+import { User, MapPin, GraduationCap, Quote } from 'lucide-react';
+
+export const Profile: React.FC = () => {
+  return (
+    <section id="profile" className="py-20 bg-slate-900/50">
+      <div className="container mx-auto px-6">
+        <FadeIn>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-16 text-center">
+            <span className="border-b-4 border-neon-teal pb-2">Profile</span>
+          </h2>
+        </FadeIn>
+
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <FadeIn direction="left">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-neon-teal to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative rounded-2xl overflow-hidden bg-slate-800 border border-slate-700">
+                 <img 
+                    src="https://picsum.photos/600/400" 
+                    alt="Working as Nurse" 
+                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                 />
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn direction="right" delay={200}>
+            <div className="space-y-6">
+              <p className="text-slate-300 leading-relaxed text-lg">
+                “Saya adalah seorang perawat profesional yang passionate dalam mengintegrasikan teknologi ke dalam praktik keperawatan. Dengan latar belakang di bidang kesehatan dan ketertarikan pada inovasi digital, saya berupaya meningkatkan kualitas pelayanan kesehatan melalui solusi berbasis teknologi.”
+              </p>
+
+              <div className="glass-card p-6 rounded-xl space-y-4 mt-8">
+                <div className="flex items-center gap-4">
+                  <User className="text-neon-teal shrink-0" />
+                  <div>
+                    <span className="block text-xs text-slate-500 uppercase tracking-wider">Nama Lengkap</span>
+                    <span className="text-white font-medium">Ns. Muhammad Arief Fardhiansyah</span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                   <div className="w-6 shrink-0" /> 
+                   <div>
+                    <span className="block text-xs text-slate-500 uppercase tracking-wider">Nama Panggilan</span>
+                    <span className="text-white font-medium">Fardian Arief</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <MapPin className="text-neon-teal shrink-0" />
+                  <div>
+                    <span className="block text-xs text-slate-500 uppercase tracking-wider">Alamat</span>
+                    <span className="text-white font-medium">Cilandak, Jakarta Selatan</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <GraduationCap className="text-neon-teal shrink-0" />
+                  <div>
+                    <span className="block text-xs text-slate-500 uppercase tracking-wider">Pendidikan</span>
+                    <span className="text-white font-medium">Profesi Ners</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Quote className="text-neon-teal shrink-0" />
+                  <div>
+                    <span className="block text-xs text-slate-500 uppercase tracking-wider">Motto</span>
+                    <span className="text-neon-teal font-bold tracking-wide">Tech-Driven Nurse</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+    </section>
+  );
+};
