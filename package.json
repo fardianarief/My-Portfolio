@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://USERNAME.github.io/NAMA-REPOSITORY",
+  "homepage": "https://USERNAME.github.io/My-Portfolio",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
