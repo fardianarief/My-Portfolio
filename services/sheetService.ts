@@ -41,8 +41,11 @@ export const fetchSheetData = async (sheetName: string) => {
 
   // Menggunakan Google Visualization API untuk mengambil spesifik Sheet berdasarkan Nama Tab
   // Note: Sheet harus di-share sebagai "Anyone with the link can view" agar endpoint ini bisa diakses tanpa login.
+  // UPDATE: Menambahkan parameter '&t=' + timestamp untuk mencegah caching browser/Google, 
+  // agar data baru langsung muncul saat di-refresh.
   const sheetParam = encodeURIComponent(sheetName);
-  const baseUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${sheetParam}`;
+  const cacheBuster = new Date().getTime(); 
+  const baseUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${sheetParam}&t=${cacheBuster}`;
 
   try {
     const response = await fetch(baseUrl);
