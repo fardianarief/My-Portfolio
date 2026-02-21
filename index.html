@@ -62,6 +62,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);backgro
 .btn-gold:hover{background:var(--gold);color:var(--bg)}
 .btn-ghost{display:inline-block;padding:13px 28px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all var(--tr)}
 .btn-ghost:hover{border-color:var(--text2);color:var(--text)}
+.btn-wa{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border:1.5px solid #25d366;background:#25d366;color:#fff;font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all var(--tr)}
+.btn-wa:hover{background:#1ebe5d;border-color:#1ebe5d;transform:translateY(-1px);box-shadow:0 6px 24px rgba(37,211,102,0.25)}
+.btn-cv{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all var(--tr)}
+.btn-cv:hover{background:var(--gold2);border-color:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(201,168,76,0.3)}
 
 /* profile card */
 .profile-wrap{display:flex;flex-direction:column}
@@ -320,7 +324,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 0}
       <div class="hero-divider"></div>
       <p class="hero-desc">Bridging clinical expertise with healthcare information technology at Mayapada Hospital, South Jakarta. Transforming data into decisions and systems into care.</p>
       <div class="hero-btns">
-        <a href="#contact" class="btn-gold">Get in Touch</a>
+        <a href="https://wa.me/6282388308450?text=Halo%20Arief%2C%20saya%20tertarik%20untuk%20berdiskusi%20mengenai%20peluang%20kerja%20sama." target="_blank" class="btn-wa">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Hire Me Now
+        </a>
+        <button onclick="downloadCV()" class="btn-cv">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </button>
         <a href="#project" class="btn-ghost">View Projects</a>
       </div>
     </div>
@@ -713,7 +724,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 0}
           <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-label">Location</div><div class="contact-value">South Jakarta, Indonesia</div></div></div>
           <div class="contact-item"><div class="contact-icon">🏥</div><div><div class="contact-label">Current Employer</div><div class="contact-value">Mayapada Hospital Jakarta Selatan</div></div></div>
           <div class="contact-item"><div class="contact-icon">💼</div><div><div class="contact-label">LinkedIn</div><div class="contact-value"><a href="https://linkedin.com/in/fardianarief" target="_blank" style="color:var(--gold)">linkedin.com/in/fardianarief ↗</a></div></div></div>
-          <div class="contact-item"><div class="contact-icon">🌐</div><div><div class="contact-label">Open To</div><div class="contact-value">fardianarief@gmail.com</div></div></div>
+          <div class="contact-item"><div class="contact-icon">🌐</div><div><div class="contact-label">Open To</div><div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="711710031518101f100318141731161c10181d5f121e1c">[email&#160;protected]</a></div></div></div>
         </div>
       </div>
       <div class="contact-form reveal">
@@ -746,7 +757,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 0}
 
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Theme toggle
 const themeBtn=document.getElementById('themeBtn');
 let dark=true;
@@ -794,8 +805,154 @@ function filterGallery(cat,btn){
   });
 }
 
-// Form
+// Form submit
 function submitForm(){alert('✅ Pesan terkirim! Arief akan segera menghubungi Anda.')}
+
+// ── DOWNLOAD CV ──
+function downloadCV(){
+  const btn = document.querySelector('.btn-cv');
+  const origHTML = btn.innerHTML;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Generating...';
+  btn.disabled = true;
+
+  function loadScript(src, cb){
+    if(document.querySelector('script[src="'+src+'"]')){ cb(); return; }
+    const s = document.createElement('script');
+    s.src = src; s.onload = cb;
+    document.head.appendChild(s);
+  }
+
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', buildPDF);
+
+  function buildPDF(){
+    const {jsPDF} = window.jspdf;
+    const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const W = doc.internal.pageSize.getWidth();
+    const m = 18, col = W - m*2;
+    let y = 0;
+
+    const C = {
+      gold:[201,168,76], dark:[13,15,18], mid:[80,90,105],
+      light:[220,222,226], white:[255,255,255], panel:[25,28,34], line:[38,42,50]
+    };
+
+    // Header
+    doc.setFillColor(...C.dark); doc.rect(0,0,W,54,'F');
+    doc.setFillColor(...C.gold); doc.rect(0,54,W,1.8,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(21); doc.setTextColor(...C.white);
+    doc.text('Ns. M. Arief Fardhiansyah, S.Kep', m, 20);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...C.gold);
+    doc.text('HIS Officer  ·  Data & BI Analyst  ·  Registered Nurse', m, 29);
+    doc.setFontSize(7.8); doc.setTextColor(170,175,185);
+    doc.text('Mayapada Hospital · South Jakarta, Indonesia', m, 38);
+    doc.text('+62 823-8830-8450   ·   linkedin.com/in/fardianarief', m, 45);
+    y = 64;
+
+    function newPage(){ doc.addPage(); y=18; doc.setFillColor(...C.gold); doc.rect(0,0,W,1.5,'F'); }
+    function check(h){ if(y+h>280) newPage(); }
+
+    function secTitle(t){
+      check(16);
+      doc.setFillColor(...C.gold); doc.rect(m,y,3,5,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...C.gold);
+      doc.text(t.toUpperCase(), m+7, y+4);
+      doc.setDrawColor(...C.line); doc.setLineWidth(0.25);
+      doc.line(m,y+8,W-m,y+8);
+      y += 14;
+    }
+
+    function para(txt, indent){
+      const x = m+(indent||0);
+      const lines = doc.splitTextToSize(txt, col-(indent||0));
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...C.mid);
+      doc.text(lines,x,y); y += lines.length*4.5+2;
+    }
+
+    function entry(date,title,org,desc){
+      check(36);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...C.gold);
+      doc.text(date,m,y); y+=5;
+      doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...C.dark);
+      doc.text(title,m,y); y+=5;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(130,140,155);
+      doc.text(org,m,y); y+=5;
+      const lines = doc.splitTextToSize(desc,col);
+      doc.setFontSize(8.5); doc.setTextColor(...C.mid);
+      doc.text(lines,m,y); y+=lines.length*4.3+7;
+    }
+
+    // SUMMARY
+    secTitle('Professional Summary');
+    para('Seorang profesional kesehatan yang telah melewati dua dunia — bangsal klinis dan ruang sistem digital. Lebih dari lima tahun di Mayapada Hospital membentuknya menjadi jembatan antara kebutuhan pasien dan solusi teknologi yang nyata.');
+    y+=2;
+    doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(...C.gold);
+    doc.text('"Teknologi yang terbaik adalah yang mempererat hubungan antara manusia."',m,y);
+    y+=8;
+
+    // EXPERIENCE
+    secTitle('Work Experience');
+    entry('2024 – Present  ·  Full Time','Hospital Information System (HIS) Officer','Mayapada Hospital · Jakarta Selatan','Mengelola dan mengoptimalkan sistem informasi rumah sakit, menghubungkan tim teknis dengan tenaga kesehatan. Memastikan kegunaan sistem, kepatuhan, dan implementasi solusi digital yang efektif.');
+    entry('2021 – 2024  ·  Full Time','Nurse Inpatient — Pediatric Ward','Mayapada Hospital · Jakarta Selatan','Memberikan perawatan langsung kepada pasien anak di unit rawat inap. Mengelola dokumentasi pasien, pendidikan keluarga, dan respons darurat. Tersertifikasi PALS dan BLS.');
+
+    // EDUCATION
+    secTitle('Education');
+    entry('2025 – 2026','Universitas Islam Sultan Agung Semarang','Business Management · Marketing & Human Resource','Pendidikan manajemen bisnis dengan fokus pada pemasaran dan sumber daya manusia.');
+    entry('2024 – Present','Institute of Management, Technology and Finance','Business Systems · Management & Technology','Program eksekutif — manajemen risiko, tata kelola, dan pengambilan keputusan bisnis berbasis data.');
+    entry('2019 – 2020','STIKes Yarsi Sumbar Bukittinggi','Profesi Ners · GPA 3.71 / 4.00','Program profesi Keperawatan komprehensif: Medikal Bedah, Gawat Darurat, dan Intensif.');
+
+    // CERTIFICATIONS
+    secTitle('Licenses & Certifications');
+    const certs=[
+      ['📊','Data Analyst Certification','Special Skill Indonesia','2026 · ID: SSB40E018'],
+      ['🏢','Executive Diploma in Innovation Management','Institute of Management, Technology & Finance','Nov 2023 · ID: 8172681890'],
+      ['🚑','Pediatric Advanced Life Support (PALS)','Clinical Emergency Response','2019 · Active License'],
+      ['❤️','Basic Life Support (BLS)','Clinical Emergency Response','2019 · Active License'],
+      ['🏛️','OPK PPNI RS Mayapada Jakarta Selatan','PPNI','Since 2022 · Active Member'],
+    ];
+    certs.forEach(([icon,title,issuer,date])=>{
+      check(15);
+      doc.setFillColor(...C.panel); doc.roundedRect(m,y-1,col,12,1,1,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...C.light);
+      doc.text(title,m+5,y+4.5);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...C.gold);
+      doc.text(issuer,m+5,y+9.5);
+      doc.setTextColor(110,120,135);
+      doc.text(date,W-m,y+9.5,{align:'right'});
+      y+=15;
+    });
+
+    // SKILLS
+    y+=2; secTitle('Core Skills');
+    const skills=[['HIS Management',96],['Clinical Workflows',96],['Data Analysis',85],['Microsoft Excel',92],['BI Reporting',78],['Project Management',80],['Information Management',88],['Communication',91]];
+    const half=Math.ceil(skills.length/2), cw=(col-10)/2;
+    const sy=y;
+    skills.forEach(([name,pct],i)=>{
+      const cx=i<half?m:m+cw+10;
+      const cy=i<half?sy+i*11:sy+(i-half)*11;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...C.mid);
+      doc.text(name,cx,cy);
+      doc.setFontSize(7.5); doc.setTextColor(...C.gold);
+      doc.text(pct+'%',cx+cw,cy,{align:'right'});
+      doc.setDrawColor(...C.line); doc.setLineWidth(1.2); doc.line(cx,cy+2.5,cx+cw,cy+2.5);
+      doc.setDrawColor(...C.gold); doc.line(cx,cy+2.5,cx+cw*(pct/100),cy+2.5);
+    });
+    y=sy+half*11+6;
+
+    // FOOTER every page
+    const total=doc.internal.getNumberOfPages();
+    for(let i=1;i<=total;i++){
+      doc.setPage(i);
+      doc.setFillColor(...C.dark); doc.rect(0,291,W,9,'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(90,100,115);
+      doc.text('Ns. M. Arief Fardhiansyah, S.Kep  ·  +62 823-8830-8450  ·  linkedin.com/in/fardianarief',m,297);
+      doc.text(i+' / '+total,W-m,297,{align:'right'});
+    }
+
+    doc.save('CV_Arief_Fardhiansyah.pdf');
+    btn.innerHTML = origHTML;
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
