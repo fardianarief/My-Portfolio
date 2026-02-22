@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nurse Sync App — Project Detail · Arief Fardhiansyah</title>
+<script>
+(function(){
+  try{var s=sessionStorage.getItem('af-theme');if(s){document.documentElement.setAttribute('data-theme',s);return;}}catch(e){}
+  var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+  document.documentElement.setAttribute('data-theme',d?'dark':'light');
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root,[data-theme="dark"]{
+  --bg:#0d0f12; --bg2:#141619; --bg3:#1a1d22; --surface:#1f2228; --surface2:#252a32;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.10); --border3:rgba(255,255,255,0.14);
+  --text:#e6e8ec; --text2:#8c95a6; --text3:#52596a;
+  --gold:#c9a84c; --gold2:#e8c97a; --gold-dim:rgba(201,168,76,0.10); --gold-glow:rgba(201,168,76,0.25);
+  --teal:#3ecf8e; --teal-dim:rgba(62,207,142,0.08);
+  --blue:#4e9eff; --blue-dim:rgba(78,158,255,0.08);
+  --red:#ff5a5a;
+  --nav-bg:rgba(13,15,18,0.95);
+  --nav-h:68px; --tr:0.28s ease; --shadow:0 20px 60px rgba(0,0,0,0.55);
+  --mono:'JetBrains Mono',monospace;
+}
+[data-theme="light"]{
+  --bg:#dddad3; --bg2:#d3cfc7; --bg3:#c9c5bc; --surface:#e4e1da; --surface2:#eae7e0;
+  --border:rgba(0,0,0,0.09); --border2:rgba(0,0,0,0.13); --border3:rgba(0,0,0,0.17);
+  --text:#1a1714; --text2:#3d372e; --text3:#6b6358;
+  --gold:#7a5a0a; --gold2:#9a7210; --gold-dim:rgba(122,90,10,0.09); --gold-glow:rgba(122,90,10,0.2);
+  --teal:#1a7a52; --teal-dim:rgba(26,122,82,0.08);
+  --blue:#1a5aaa; --blue-dim:rgba(26,90,170,0.08);
+  --red:#c0392b;
+  --nav-bg:rgba(211,207,199,0.96);
+  --shadow:0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background var(--tr),color var(--tr)}
+h1,h2,h3,h4,h5{font-family:'Playfair Display',serif;line-height:1.15}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  height:var(--nav-h);background:var(--nav-bg);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  transition:background var(--tr);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1160px;margin:0 auto;padding:0 28px;height:100%;
+}
+.nav-back{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text3);transition:color var(--tr);
+}
+.nav-back svg{transition:transform var(--tr)}
+.nav-back:hover{color:var(--gold)}
+.nav-back:hover svg{transform:translateX(-3px)}
+.nav-center{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;letter-spacing:0.02em;color:var(--text2)}
+.nav-center em{color:var(--gold);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:10px}
+.theme-btn{
+  width:36px;height:36px;border:1px solid var(--border2);background:var(--surface);
+  color:var(--text2);font-size:0.95rem;display:flex;align-items:center;justify-content:center;
+  transition:all var(--tr);border-radius:3px;
+}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:flex-end;
+  overflow:hidden;padding-top:var(--nav-h);
+}
+/* animated dot grid */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:radial-gradient(circle,var(--border2) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 80%);
+  animation:gridBreath 6s ease-in-out infinite;
+}
+@keyframes gridBreath{0%,100%{opacity:0.35}50%{opacity:0.65}}
+.hero-glow{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 600px 500px at 60% 35%, rgba(201,168,76,0.07) 0%,transparent 65%),
+    radial-gradient(ellipse 400px 350px at 15% 70%, rgba(62,207,142,0.04) 0%,transparent 60%);
+}
+[data-theme="light"] .hero-glow{
+  background:
+    radial-gradient(ellipse 600px 500px at 60% 35%, rgba(122,90,10,0.10) 0%,transparent 65%),
+    radial-gradient(ellipse 400px 350px at 15% 70%, rgba(26,122,82,0.05) 0%,transparent 60%);
+}
+.hero-content{
+  position:relative;z-index:1;width:100%;
+  max-width:1160px;margin:0 auto;padding:72px 28px 80px;
+  display:grid;grid-template-columns:1fr 440px;gap:60px;align-items:end;
+}
+/* hero left */
+.hero-eyebrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  border:1px solid;border-radius:2px;
+}
+.badge-live{color:var(--teal);border-color:rgba(62,207,142,0.35);background:var(--teal-dim)}
+[data-theme="light"] .badge-live{color:var(--teal)}
+.badge-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal);animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+.badge-year{color:var(--text3);border-color:var(--border2);background:transparent}
+.badge-tech{color:var(--gold);border-color:var(--gold-dim);background:var(--gold-dim)}
+.hero-title{
+  font-size:clamp(3rem,5.8vw,5.2rem);
+  font-weight:700;line-height:1;
+  letter-spacing:-0.025em;
+  margin-bottom:6px;
+}
+.hero-title-accent{color:var(--gold);display:block;font-style:italic}
+.hero-sub{
+  font-size:clamp(0.95rem,1.5vw,1.07rem);
+  color:var(--text2);line-height:1.82;
+  max-width:500px;margin-bottom:38px;margin-top:18px;
+}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;font-family:'Lato',sans-serif;
+  font-size:0.74rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  transition:all var(--tr);cursor:pointer;border-radius:2px;
+}
+.btn-gold{
+  border:1.5px solid var(--gold);background:var(--gold);
+  color:#fff;
+}
+[data-theme="dark"] .btn-gold{color:var(--bg)}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 26px var(--gold-glow)}
+.btn-outline{border:1px solid var(--border2);background:transparent;color:var(--text2)}
+.btn-outline:hover{border-color:var(--text);color:var(--text);transform:translateY(-2px)}
+.btn-wa{
+  border:1.5px solid #22c55e;background:#22c55e;color:#fff;
+}
+.btn-wa:hover{background:#16a34a;border-color:#16a34a;transform:translateY(-2px);box-shadow:0 8px 26px rgba(34,197,94,0.35)}
+.btn-teal{border:1.5px solid var(--teal);background:var(--teal);color:#fff}
+[data-theme="dark"] .btn-teal{color:var(--bg)}
+.btn-teal:hover{opacity:0.88;transform:translateY(-2px)}
+
+/* hero right — stat card */
+.hero-card{
+  background:var(--surface);border:1px solid var(--border2);
+  overflow:hidden;position:relative;
+}
+.hero-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--teal) 50%,var(--blue) 100%);
+}
+.stat-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--border);
+}
+.stat-cell{
+  padding:20px 18px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.stat-cell:nth-child(2),.stat-cell:nth-child(4){border-right:none}
+.stat-cell:nth-child(1),.stat-cell:nth-child(2){border-bottom:1px solid var(--border)}
+.stat-n{
+  font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;
+  color:var(--gold);line-height:1;margin-bottom:6px;
+}
+.stat-l{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3)}
+.hero-card-body{padding:20px}
+.stack-label{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.stack-pills{display:flex;flex-wrap:wrap;gap:5px}
+.stack-pill{
+  padding:3px 10px;border:1px solid var(--border);
+  font-family:var(--mono);font-size:0.63rem;color:var(--text3);
+  transition:all var(--tr);
+}
+.stack-pill:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS SHARED
+═══════════════════════════════════════════════ */
+section{padding:88px 0}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.sec-eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.sec-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+.sec-title{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;margin-bottom:12px}
+.sec-sub{font-size:0.93rem;color:var(--text2);line-height:1.82;max-width:540px}
+
+/* ═══════════════════════════════════════════════
+   OVERVIEW — SPLIT PANEL
+═══════════════════════════════════════════════ */
+#overview{background:var(--bg2)}
+.overview-panels{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-top:52px;
+}
+.ov-panel{background:var(--bg2);padding:40px 36px}
+.ov-panel-icon{font-size:2.2rem;margin-bottom:18px}
+.ov-panel-heading{
+  font-family:'Playfair Display',serif;
+  font-size:1.25rem;font-weight:700;margin-bottom:14px;
+}
+.ov-panel-text{font-size:0.88rem;color:var(--text2);line-height:1.85;margin-bottom:20px}
+.item-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.item-list li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:0.86rem;color:var(--text2);line-height:1.6;
+}
+.item-list li .icon{flex-shrink:0;margin-top:1px;font-size:0.75rem;font-weight:700}
+.icon-x{color:var(--red)}
+.icon-ok{color:var(--teal)}
+
+/* ═══════════════════════════════════════════════
+   FEATURES GRID
+═══════════════════════════════════════════════ */
+#features{background:var(--bg)}
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin-top:52px;
+}
+.feat-card{
+  background:var(--surface);padding:30px 26px;
+  position:relative;overflow:hidden;transition:background var(--tr);
+}
+.feat-card:hover{background:var(--surface2)}
+.feat-card-accent{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform var(--tr);
+}
+.feat-card:hover .feat-card-accent{transform:scaleX(1)}
+.feat-icon{
+  width:44px;height:44px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin-bottom:18px;transition:border-color var(--tr);
+}
+.feat-card:hover .feat-icon{border-color:var(--gold)}
+.feat-title{font-family:'Playfair Display',serif;font-size:0.98rem;font-weight:700;margin-bottom:9px}
+.feat-desc{font-size:0.83rem;color:var(--text2);line-height:1.75}
+.feat-chip{
+  display:inline-block;margin-top:14px;
+  padding:2px 9px;border:1px solid var(--border);
+  font-family:var(--mono);font-size:0.6rem;color:var(--text3);
+}
+
+/* ═══════════════════════════════════════════════
+   HOW IT WORKS — TIMELINE STEPS
+═══════════════════════════════════════════════ */
+#how{background:var(--bg2)}
+.flow-track{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;margin-top:52px;position:relative;
+}
+.flow-connector{
+  position:absolute;top:35px;left:calc(12.5% + 8px);right:calc(12.5% + 8px);
+  height:1px;background:linear-gradient(90deg,var(--gold),var(--border),var(--gold));
+  z-index:0;
+}
+.flow-step{padding:0 16px;text-align:center;position:relative;z-index:1}
+.flow-circle{
+  width:70px;height:70px;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;background:var(--bg2);
+  font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:var(--gold);
+  transition:all var(--tr);position:relative;
+}
+.flow-circle::after{
+  content:'';position:absolute;inset:-5px;
+  border:1px dashed rgba(201,168,76,0.22);
+}
+.flow-step:hover .flow-circle{background:var(--gold);color:var(--bg)}
+.flow-step-label{font-family:'Playfair Display',serif;font-size:0.96rem;font-weight:700;margin-bottom:8px}
+.flow-step-desc{font-size:0.8rem;color:var(--text2);line-height:1.72}
+
+/* ═══════════════════════════════════════════════
+   IMPACT — METRICS ROW
+═══════════════════════════════════════════════ */
+#impact{background:var(--bg)}
+.metrics-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin-top:52px;
+}
+.metric-cell{
+  background:var(--surface);padding:34px 20px;
+  text-align:center;transition:background var(--tr);
+}
+.metric-cell:hover{background:var(--surface2)}
+.metric-num{
+  font-family:'Playfair Display',serif;
+  font-size:2.8rem;font-weight:700;color:var(--gold);
+  line-height:1;margin-bottom:10px;
+}
+.metric-desc{font-size:0.78rem;color:var(--text2);line-height:1.65;max-width:130px;margin:0 auto}
+
+/* testimonials */
+.testimonials{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin-top:52px;
+}
+.testi{background:var(--surface);padding:28px 24px;transition:background var(--tr)}
+.testi:hover{background:var(--surface2)}
+.stars{color:var(--gold);font-size:0.8rem;letter-spacing:2px;margin-bottom:13px}
+.quote{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:0.9rem;line-height:1.78;color:var(--text);
+  border-left:2px solid var(--gold);padding-left:13px;margin-bottom:16px;
+}
+.testi-author{display:flex;align-items:center;gap:11px}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:var(--gold);font-size:0.8rem;flex-shrink:0;
+}
+.author-name{font-size:0.8rem;font-weight:700;margin-bottom:2px}
+.author-role{font-size:0.68rem;color:var(--text3)}
+
+/* ═══════════════════════════════════════════════
+   MEDIA GALLERY
+═══════════════════════════════════════════════ */
+#gallery{background:var(--bg2)}
+.gallery-filter{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:28px}
+.gf-btn{
+  padding:7px 18px;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid var(--border);background:transparent;color:var(--text3);transition:all var(--tr);
+}
+.gf-btn.on,.gf-btn:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+[data-theme="dark"] .gf-btn.on,[data-theme="dark"] .gf-btn:hover{color:var(--bg)}
+
+/* gallery mosaic */
+.gallery-mosaic{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:200px 200px 200px;
+  gap:2px;
+  background:var(--border);
+}
+.gitem{
+  overflow:hidden;cursor:pointer;position:relative;background:var(--surface);
+}
+/* layout positions */
+.gitem:nth-child(1){grid-column:span 5;grid-row:span 2}
+.gitem:nth-child(2){grid-column:span 4;grid-row:span 1}
+.gitem:nth-child(3){grid-column:span 3;grid-row:span 1}
+.gitem:nth-child(4){grid-column:span 4;grid-row:span 1}
+.gitem:nth-child(5){grid-column:span 3;grid-row:span 1}
+.gitem:nth-child(6){grid-column:span 4;grid-row:span 1}
+.gitem:nth-child(7){grid-column:span 4;grid-row:span 1}
+.gitem:nth-child(8){grid-column:span 4;grid-row:span 1}
+
+.gmock{width:100%;height:100%;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
+.gitem:hover .gmock{transform:scale(1.06)}
+
+/* mock app screens */
+.mock{display:flex;flex-direction:column;width:100%;height:100%;padding:14px;overflow:hidden;gap:7px}
+.mock-header{height:20px;display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.mock-dot-r{width:7px;height:7px;border-radius:50%;background:var(--red);opacity:0.6}
+.mock-dot-y{width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:0.6}
+.mock-dot-g{width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.6}
+.mock-titlebar{flex:1;height:6px;background:var(--border2);border-radius:2px}
+.mbar{height:6px;border-radius:2px;background:var(--border2)}
+.mbar.gold{background:var(--gold);opacity:0.45}
+.mbar.teal{background:var(--teal);opacity:0.4}
+.mbar.blue{background:var(--blue);opacity:0.4}
+.mbar.w80{width:80%}.mbar.w60{width:60%}.mbar.w50{width:50%}.mbar.w40{width:40%}.mbar.w30{width:30%}.mbar.w70{width:70%}.mbar.full{width:100%}
+.mrow{display:flex;gap:6px;align-items:center}
+.mcard{flex:1;background:var(--border);padding:8px;display:flex;flex-direction:column;gap:5px;min-height:44px}
+.mdot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.mdot.tl{background:var(--teal)}.mdot.bl{background:var(--blue)}
+.mline{flex:1;height:4px;background:var(--border2);border-radius:1px}
+.mtable{display:flex;flex-direction:column;gap:3px}
+.mtr{height:18px;display:flex;align-items:center;gap:6px;padding:0 6px;background:var(--border);border-radius:1px}
+.mtr.head{background:var(--gold-dim);border:1px solid var(--gold-dim)}
+.mchart{display:flex;align-items:flex-end;gap:3px;height:50px;padding-top:6px}
+.mbar-v{flex:1;border-radius:1px 1px 0 0;transition:opacity var(--tr)}
+.mbar-v.gold{background:var(--gold);opacity:0.3}
+.mbar-v.teal{background:var(--teal);opacity:0.35}
+.mbar-v.blue{background:var(--blue);opacity:0.3}
+.gitem:hover .mbar-v{opacity:0.6}
+.mnotif{
+  background:var(--teal-dim);border:1px solid rgba(62,207,142,0.22);
+  padding:7px 10px;display:flex;align-items:center;gap:8px;border-radius:1px;
+}
+.mnotif-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.mprogress{display:flex;flex-direction:column;gap:6px}
+.mprogressbar{height:5px;background:var(--border);border-radius:2px;overflow:hidden}
+.mprogressfill{height:100%;border-radius:2px;background:var(--gold);opacity:0.5}
+
+/* video badge */
+.vid-badge{
+  position:absolute;top:10px;left:10px;
+  font-size:0.58rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;
+  padding:3px 8px;background:var(--gold);color:var(--bg);z-index:3;
+}
+/* play button */
+.play-wrap{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+}
+.play-btn{
+  width:52px;height:52px;border:2px solid rgba(255,255,255,0.7);
+  background:rgba(13,15,18,0.7);display:flex;align-items:center;justify-content:center;
+  transition:all var(--tr);
+}
+.gitem:hover .play-btn{background:var(--gold);border-color:var(--gold)}
+.play-btn svg{fill:rgba(255,255,255,0.9);transition:all var(--tr)}
+.gitem:hover .play-btn svg{fill:var(--bg)}
+
+/* gallery hover overlay */
+.goverlay{
+  position:absolute;inset:0;
+  background:rgba(13,15,18,0.86);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;opacity:0;transition:opacity var(--tr);z-index:5;
+}
+[data-theme="light"] .goverlay{background:rgba(26,20,15,0.84)}
+.gitem:hover .goverlay{opacity:1}
+.gitem:hover .gmock{transform:scale(1.05)}
+.gov-title{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:#fff;text-align:center;padding:0 12px}
+.gov-tag{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)}
+.gov-cta{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 16px;border:1px solid var(--gold);color:var(--gold);
+  font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  margin-top:4px;transition:all var(--tr);
+}
+.gov-cta:hover{background:var(--gold);color:var(--bg)}
+
+/* ═══════════════════════════════════════════════
+   ROADMAP
+═══════════════════════════════════════════════ */
+#roadmap{background:var(--bg)}
+.roadmap-items{border:1px solid var(--border);margin-top:52px}
+.ritem{
+  display:grid;grid-template-columns:148px 1fr;
+  border-bottom:1px solid var(--border);transition:background var(--tr);
+}
+.ritem:last-child{border-bottom:none}
+.ritem:hover{background:var(--surface)}
+.rphase{
+  padding:24px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.rphase-num{
+  font-family:'Playfair Display',serif;font-size:2.2rem;
+  font-weight:700;color:var(--border3);line-height:1;
+}
+.rphase-yr{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-top:4px}
+.rcontent{padding:24px 28px}
+.rtitle{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:7px}
+.rdesc{font-size:0.84rem;color:var(--text2);line-height:1.78}
+.rstatus{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:11px;padding:3px 10px;border:1px solid;border-radius:2px;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+}
+.rs-done{color:var(--teal);border-color:rgba(62,207,142,0.3);background:var(--teal-dim)}
+.rs-active{color:var(--gold);border-color:rgba(201,168,76,0.3);background:var(--gold-dim)}
+.rs-active::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);animation:livePulse 2s infinite}
+.rs-plan{color:var(--text3);border-color:var(--border);background:transparent}
+
+/* ═══════════════════════════════════════════════
+   CTA FINAL
+═══════════════════════════════════════════════ */
+#cta{position:relative;overflow:hidden}
+.cta-bg-el{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 900px 700px at 50% 50%, rgba(201,168,76,0.055) 0%,transparent 70%),
+    var(--bg2);
+}
+[data-theme="light"] .cta-bg-el{
+  background:
+    radial-gradient(ellipse 900px 700px at 50% 50%, rgba(122,90,10,0.08) 0%,transparent 70%),
+    var(--bg2);
+}
+.cta-inner{
+  position:relative;z-index:1;
+  text-align:center;padding:100px 28px;
+  max-width:700px;margin:0 auto;
+}
+.cta-title{font-size:clamp(2rem,4.5vw,3.6rem);font-weight:700;margin-bottom:18px;line-height:1.1}
+.cta-title em{color:var(--gold);font-style:italic}
+.cta-sub{font-size:0.96rem;color:var(--text2);line-height:1.82;margin-bottom:40px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-note{font-size:0.72rem;color:var(--text3);margin-top:22px;line-height:1.7}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:42px 0}
+.footer-inner{
+  max-width:1160px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+}
+.footer-brand{font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem}
+.footer-brand em{color:var(--gold);font-style:normal}
+.footer-copy{font-size:0.7rem;color:var(--text3)}
+.footer-back{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;
+  color:var(--text3);transition:color var(--tr);
+}
+.footer-back:hover{color:var(--gold)}
+
+/* ═══════════════════════════════════════════════
+   POPUP
+═══════════════════════════════════════════════ */
+.popup-bg{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,0.78);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.popup-bg.show{display:flex}
+.popup-box{
+  background:var(--bg2);border:1px solid var(--border2);
+  max-width:500px;width:100%;position:relative;
+  overflow:hidden;
+  animation:popAppear 0.32s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes popAppear{
+  from{opacity:0;transform:scale(0.88) translateY(24px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+.popup-ribbon{height:3px;background:linear-gradient(90deg,var(--gold),var(--teal),var(--blue))}
+.popup-close{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border:1px solid var(--border);background:transparent;
+  color:var(--text3);font-size:0.9rem;display:flex;align-items:center;justify-content:center;
+  transition:all var(--tr);
+}
+.popup-close:hover{border-color:var(--red);color:var(--red)}
+.popup-inner{padding:36px 32px}
+.popup-emoji{font-size:2.4rem;margin-bottom:14px}
+.popup-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:7px}
+.popup-sub{font-size:0.86rem;color:var(--text2);line-height:1.76;margin-bottom:24px}
+.popup-ref{
+  background:var(--surface);border:1px solid var(--border);
+  padding:12px 15px;display:flex;align-items:center;gap:12px;margin-bottom:22px;
+}
+.popup-ref-icon{font-size:1.3rem}
+.popup-ref-name{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700}
+.popup-ref-type{font-size:0.68rem;color:var(--text3);margin-top:2px}
+.popup-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.popt{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 15px;border:1px solid var(--border);
+  cursor:pointer;transition:all var(--tr);text-decoration:none;color:var(--text);
+}
+.popt:hover{border-color:var(--gold);background:var(--gold-dim)}
+.popt-ico{font-size:1rem;width:22px;text-align:center;flex-shrink:0}
+.popt strong{display:block;font-size:0.83rem;font-weight:700;margin-bottom:2px}
+.popt span{font-size:0.73rem;color:var(--text2)}
+.popup-or{
+  display:flex;align-items:center;gap:10px;
+  color:var(--text3);font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.popup-or::before,.popup-or::after{content:'';flex:1;height:1px;background:var(--border)}
+.popup-wa-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;padding:13px 20px;
+  background:#22c55e;border:1.5px solid #22c55e;color:#fff;
+  font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;transition:all var(--tr);
+}
+.popup-wa-btn:hover{background:#16a34a;box-shadow:0 6px 22px rgba(34,197,94,0.4)}
+.popup-hint{font-size:0.7rem;color:var(--text3);text-align:center;margin-top:12px;line-height:1.65}
+
+/* ═══════════════════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════════════════ */
+.btt{
+  position:fixed;bottom:24px;right:24px;z-index:800;
+  width:40px;height:40px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text2);font-size:0.9rem;display:flex;align-items:center;justify-content:center;
+  transition:all var(--tr);opacity:0;pointer-events:none;transform:translateY(8px);
+}
+.btt.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.btt:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ═══════════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:0.08s}
+.reveal.d2{transition-delay:0.16s}
+.reveal.d3{transition-delay:0.24s}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr;padding-bottom:60px}
+  .hero-card{max-width:460px}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .flow-track{grid-template-columns:1fr 1fr;gap:32px}
+  .flow-connector{display:none}
+  .metrics-strip{grid-template-columns:1fr 1fr}
+  .testimonials{grid-template-columns:1fr}
+  .gallery-mosaic{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto;
+  }
+  .gitem:nth-child(n){grid-column:span 1;grid-row:span 1;height:200px}
+  .gitem:nth-child(1){grid-column:span 2;height:220px}
+  .ritem{grid-template-columns:110px 1fr}
+}
+@media(max-width:680px){
+  section{padding:60px 0}
+  .container{padding:0 18px}
+  .hero-content{padding:52px 18px 52px;gap:36px}
+  .hero-title{font-size:2.8rem}
+  .overview-panels{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr}
+  .flow-track{grid-template-columns:1fr}
+  .metrics-strip{grid-template-columns:1fr 1fr}
+  .ritem{grid-template-columns:1fr}
+  .rphase{border-right:none;border-bottom:1px solid var(--border);padding:14px 24px;flex-direction:row;align-items:center;gap:12px}
+  .gallery-mosaic{grid-template-columns:1fr}
+  .gitem:nth-child(n){grid-column:1;height:180px}
+  .popup-inner{padding:26px 20px}
+  .footer-inner{flex-direction:column;text-align:center;gap:10px}
+  .cta-btns{flex-direction:column;align-items:center}
+  nav .nav-center{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="portfolio_arief.html" class="nav-back">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Portfolio
+    </a>
+    <div class="nav-center">M. Arief <em>Fardhiansyah</em></div>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" title="Toggle tema">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <!-- LEFT -->
+    <div>
+      <div class="hero-eyebrow">
+        <span class="badge badge-live">Active Project</span>
+        <span class="badge badge-year">2022 – Present</span>
+        <span class="badge badge-tech">Healthcare IT</span>
+      </div>
+      <h1 class="hero-title">
+        Nurse Sync
+        <em class="hero-title-accent">App</em>
+      </h1>
+      <p class="hero-sub">Smart workspace yang membantu perawat mengorganisir tugas harian, mendokumentasikan perawatan pasien, dan mengkoordinasikan komunikasi tim — mengurangi beban administratif hingga 40% dan mengembalikan waktu perawat untuk hal yang paling penting: merawat pasien.</p>
+      <div class="hero-actions">
+        <button class="btn btn-gold" onclick="openPopup('📱 Nurse Sync App','Halaman Utama','hero')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book a Demo
+        </button>
+        <a href="https://wa.me/6282388308450?text=Halo%20Arief!%20Saya%20tertarik%20dengan%20Nurse%20Sync%20App%20dan%20ingin%20mendapatkan%20informasi%20lebih%20lanjut." target="_blank" class="btn btn-wa">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Hubungi via WA
+        </a>
+        <a href="#gallery" class="btn btn-outline">Lihat Gallery →</a>
+      </div>
+    </div>
+    <!-- RIGHT — stat card -->
+    <div>
+      <div class="hero-card">
+        <div class="stat-grid">
+          <div class="stat-cell"><div class="stat-n">40%</div><div class="stat-l">Hemat Adm. Time</div></div>
+          <div class="stat-cell"><div class="stat-n">3 th</div><div class="stat-l">Dikembangkan</div></div>
+          <div class="stat-cell"><div class="stat-n">120+</div><div class="stat-l">Pengguna Aktif</div></div>
+          <div class="stat-cell"><div class="stat-n">8</div><div class="stat-l">Modul Utama</div></div>
+        </div>
+        <div class="hero-card-body">
+          <div class="stack-label">Tech Stack</div>
+          <div class="stack-pills">
+            <span class="stack-pill">Excel</span>
+            <span class="stack-pill">VBA Macro</span>
+            <span class="stack-pill">Power Query</span>
+            <span class="stack-pill">Google Sheets</span>
+            <span class="stack-pill">Power BI</span>
+            <span class="stack-pill">HIS API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<section id="overview">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Problem &amp; Solution</div>
+      <h2 class="sec-title">Lahir dari Bangsal,<br>Bukan dari Teori</h2>
+      <p class="sec-sub">Nurse Sync App lahir dari 3 tahun pengalaman langsung merawat pasien anak di unit rawat inap — merasakan sendiri betapa beratnya beban administratif yang mencuri waktu dari pasien.</p>
+    </div>
+    <div class="overview-panels reveal">
+      <div class="ov-panel">
+        <div class="ov-panel-icon">🩹</div>
+        <div class="ov-panel-heading">Masalah yang Nyata</div>
+        <p class="ov-panel-text">Setiap perawat rata-rata menghabiskan <strong>2–3 jam per shift</strong> hanya untuk tugas administratif. Waktu yang seharusnya digunakan untuk pasien, terbuang di meja kerja.</p>
+        <ul class="item-list">
+          <li><span class="icon icon-x">✕</span>Pencatatan pasien manual — rentan hilang, sulit dibaca</li>
+          <li><span class="icon icon-x">✕</span>Tidak ada sistem handover shift yang terstruktur</li>
+          <li><span class="icon icon-x">✕</span>Koordinasi tim via chat — tidak terdokumentasi</li>
+          <li><span class="icon icon-x">✕</span>Laporan harian menyita 45–60 menit per perawat</li>
+          <li><span class="icon icon-x">✕</span>Data pasien tersebar, tidak terintegrasi</li>
+          <li><span class="icon icon-x">✕</span>Tidak ada visibilitas real-time kondisi bangsal</li>
+        </ul>
+      </div>
+      <div class="ov-panel">
+        <div class="ov-panel-icon">💡</div>
+        <div class="ov-panel-heading">Solusi yang Kami Hadirkan</div>
+        <p class="ov-panel-text">Workspace digital terpadu yang dirancang <strong>oleh perawat, untuk perawat</strong> — memahami alur klinis dari dalam dan menghadirkan solusi yang intuitif tanpa kurva belajar tinggi.</p>
+        <ul class="item-list">
+          <li><span class="icon icon-ok">✓</span>Dokumentasi pasien digital standar JCI/SNARS</li>
+          <li><span class="icon icon-ok">✓</span>Smart handover SBAR — selesai dalam 5 menit</li>
+          <li><span class="icon icon-ok">✓</span>Dashboard tugas real-time seluruh tim bangsal</li>
+          <li><span class="icon icon-ok">✓</span>Laporan harian auto-generate dengan satu klik</li>
+          <li><span class="icon icon-ok">✓</span>Notifikasi intervensi &amp; jadwal obat terintegrasi</li>
+          <li><span class="icon icon-ok">✓</span>Analitik beban kerja untuk kepala ruangan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURES ═══════ -->
+<section id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Fitur Unggulan</div>
+      <h2 class="sec-title">8 Modul yang Mengubah<br>Cara Kerja Bangsal</h2>
+      <p class="sec-sub">Setiap modul lahir dari kebutuhan nyata di lapangan, divalidasi bersama perawat aktif, dan disesuaikan dengan standar akreditasi internasional.</p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">📋</div>
+        <div class="feat-title">Patient Task Board</div>
+        <p class="feat-desc">Papan tugas visual per pasien yang menampilkan intervensi, jadwal observasi, dan status penyelesaian secara real-time oleh seluruh tim shift.</p>
+        <span class="feat-chip">Core Module</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">🔄</div>
+        <div class="feat-title">Smart Handover SBAR</div>
+        <p class="feat-desc">Template serah terima shift terstruktur dengan metode SBAR — Situation, Background, Assessment, Recommendation. Dari 45 menit menjadi 5 menit.</p>
+        <span class="feat-chip">SBAR Format</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Ward Analytics Dashboard</div>
+        <p class="feat-desc">Dashboard kepala ruangan yang menampilkan BOR, beban kerja perawat, tren diagnosis, dan indikator mutu layanan secara visual dan real-time.</p>
+        <span class="feat-chip">Power BI</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">💊</div>
+        <div class="feat-title">Medication Safety Tracker</div>
+        <p class="feat-desc">Pelacak 5 benar pemberian obat yang memastikan setiap administrasi obat terdokumentasi lengkap — mengurangi risiko medication error secara signifikan.</p>
+        <span class="feat-chip">Patient Safety</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">Auto Report Generator</div>
+        <p class="feat-desc">Laporan harian, rekap shift, dan laporan insiden ter-generate otomatis dari data yang sudah diinput — dari 60 menit menjadi kurang dari 5 menit.</p>
+        <span class="feat-chip">Automation</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">🔔</div>
+        <div class="feat-title">Clinical Alert System</div>
+        <p class="feat-desc">Notifikasi untuk tanda vital kritis, jadwal observasi, dan pengingat prosedur tepat waktu — membantu perawat tetap fokus pada prioritas klinis.</p>
+        <span class="feat-chip">Early Warning</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">👥</div>
+        <div class="feat-title">Team Communication Log</div>
+        <p class="feat-desc">Catatan komunikasi tim yang terstruktur — setiap instruksi dokter, konsultasi, dan catatan penting tersimpan dan dapat ditelusuri kapan saja.</p>
+        <span class="feat-chip">Documentation</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">🔗</div>
+        <div class="feat-title">HIS Integration Bridge</div>
+        <p class="feat-desc">Koneksi dua arah dengan sistem informasi rumah sakit utama — tidak ada input ganda, tidak ada duplikasi, tidak ada kesalahan transfer data.</p>
+        <span class="feat-chip">Integration</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-accent"></div>
+        <div class="feat-icon">🏆</div>
+        <div class="feat-title">Performance Tracker</div>
+        <p class="feat-desc">Evaluasi kinerja individu perawat berdasarkan data objektif — penyelesaian tugas, ketepatan waktu intervensi, dan kelengkapan dokumentasi.</p>
+        <span class="feat-chip">HR Module</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ HOW IT WORKS ═══════ -->
+<section id="how">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Cara Kerja</div>
+      <h2 class="sec-title">Alur yang Intuitif,<br>Hasil yang Terasa</h2>
+      <p class="sec-sub">Dirancang agar perawat siap produktif hanya dengan orientasi 30 menit — tanpa pelatihan teknis panjang, tanpa hambatan adopsi.</p>
+    </div>
+    <div class="flow-track reveal">
+      <div class="flow-connector"></div>
+      <div class="flow-step">
+        <div class="flow-circle">01</div>
+        <div class="flow-step-label">Login &amp; Cek Status</div>
+        <p class="flow-step-desc">Perawat login di awal shift dan langsung melihat kondisi terkini seluruh pasien — siapa yang butuh perhatian segera, siapa yang sudah stabil.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-circle">02</div>
+        <div class="flow-step-label">Terima Handover</div>
+        <p class="flow-step-desc">Membaca laporan serah terima dari shift sebelumnya dalam format SBAR yang terstruktur — semua informasi penting dalam satu layar, dalam 5 menit.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-circle">03</div>
+        <div class="flow-step-label">Kerjakan &amp; Catat</div>
+        <p class="flow-step-desc">Melaksanakan tugas klinis sambil mendokumentasikan langsung — tidak ada tumpukan pencatatan di akhir shift yang menyita waktu dan energi.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-circle">04</div>
+        <div class="flow-step-label">Laporan &amp; Serahkan</div>
+        <p class="flow-step-desc">Di akhir shift, laporan sudah siap otomatis. Serah terima shift berikutnya selesai dalam 5 menit, pulang tepat waktu, dan pikiran tenang.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ IMPACT ═══════ -->
+<section id="impact">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Dampak Terukur</div>
+      <h2 class="sec-title">Angka yang Bicara<br>Lebih Keras dari Kata</h2>
+      <p class="sec-sub">Data nyata dari 18 bulan implementasi aktif di unit rawat inap Mayapada Hospital Jakarta Selatan.</p>
+    </div>
+    <div class="metrics-strip reveal">
+      <div class="metric-cell">
+        <div class="metric-num">40%</div>
+        <p class="metric-desc">Penurunan waktu dokumentasi administratif per shift</p>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">5<span style="font-size:1.4rem"> min</span></div>
+        <p class="metric-desc">Rata-rata waktu handover turun dari 45 menit</p>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">98%</div>
+        <p class="metric-desc">Kelengkapan dokumentasi pasien pasca implementasi</p>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">0</div>
+        <p class="metric-desc">Medication error terkait dokumentasi di Q4 2024</p>
+      </div>
+    </div>
+
+    <!-- testimonials -->
+    <div class="reveal" style="margin-top:52px">
+      <div class="sec-eyebrow">Kata Mereka</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:36px">Suara dari Pengguna Langsung</h3>
+    </div>
+    <div class="testimonials reveal">
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Sebelum Nurse Sync, saya habiskan lebih dari 1 jam hanya untuk laporan. Sekarang 5 menit sudah selesai dan saya bisa pulang tepat waktu. Ini mengubah kualitas hidup saya."</p>
+        <div class="testi-author">
+          <div class="avatar">NS</div>
+          <div>
+            <div class="author-name">Ns. Sarah, S.Kep</div>
+            <div class="author-role">Perawat Bangsal Pediatrik · Mayapada Hospital</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Sebagai kepala ruangan, saya akhirnya punya data yang bisa dipercaya untuk evaluasi tim. Dashboard-nya sangat membantu dalam pengambilan keputusan manajemen bangsal setiap hari."</p>
+        <div class="testi-author">
+          <div class="avatar">RH</div>
+          <div>
+            <div class="author-name">Ns. Rini H., S.Kep., M.Kep</div>
+            <div class="author-role">Kepala Ruangan Rawat Inap Anak</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★☆</div>
+        <p class="quote">"Handover yang dulu sering menyebabkan miscommunication antar shift, sekarang menjadi terstruktur dan akurat. Tim kami jauh lebih sinkron dalam merawat pasien."</p>
+        <div class="testi-author">
+          <div class="avatar">DM</div>
+          <div>
+            <div class="author-name">Dr. Dian M., Sp.A</div>
+            <div class="author-role">Dokter Spesialis Anak · Mayapada Hospital</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MEDIA GALLERY ═══════ -->
+<section id="gallery">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Screenshots &amp; Demo Video</div>
+      <h2 class="sec-title">Lihat Sendiri<br>Tampilan Aplikasinya</h2>
+      <p class="sec-sub">Klik gambar atau video untuk menjadwalkan demo langsung dan melihat seluruh fitur dalam aksi nyata bersama Arief.</p>
+    </div>
+    <div class="gallery-filter reveal">
+      <button class="gf-btn on" onclick="filterGallery('all',this)">Semua</button>
+      <button class="gf-btn" onclick="filterGallery('screenshot',this)">Screenshots</button>
+      <button class="gf-btn" onclick="filterGallery('video',this)">Demo Video</button>
+      <button class="gf-btn" onclick="filterGallery('dashboard',this)">Dashboard</button>
+    </div>
+
+    <div class="gallery-mosaic reveal" id="galleryGrid">
+
+      <!-- 1: Task Board (wide tall) -->
+      <div class="gitem" data-cat="screenshot" onclick="openPopup('📋 Patient Task Board','Screenshot · Modul Utama','task-board')">
+        <div class="gmock" style="background:var(--surface)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar gold w50"></div>
+            <div class="mrow">
+              <div class="mcard"><div class="mdot"></div><div class="mbar w80" style="margin-top:4px"></div><div class="mbar w60"></div></div>
+              <div class="mcard"><div class="mdot tl"></div><div class="mbar w80" style="margin-top:4px"></div><div class="mbar w70"></div></div>
+              <div class="mcard"><div class="mdot bl"></div><div class="mbar w80" style="margin-top:4px"></div><div class="mbar w50"></div></div>
+            </div>
+            <div class="mrow">
+              <div class="mcard"><div class="mbar w60"></div><div class="mbar w40" style="margin-top:4px"></div></div>
+              <div class="mcard"><div class="mbar w70"></div><div class="mbar w50" style="margin-top:4px"></div></div>
+              <div class="mcard"><div class="mbar w50"></div><div class="mbar w60" style="margin-top:4px"></div></div>
+            </div>
+            <div class="mnotif"><div class="mnotif-dot"></div><div style="flex:1"><div class="mbar w70"></div><div class="mbar w40" style="margin-top:4px"></div></div></div>
+          </div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Patient Task Board</div>
+          <div class="gov-tag">Screenshot · Core Module</div>
+          <div class="gov-cta">📅 Schedule Demo</div>
+        </div>
+      </div>
+
+      <!-- 2: Dashboard Analytics -->
+      <div class="gitem" data-cat="dashboard" onclick="openPopup('📊 Analytics Dashboard','Screenshot · Ward BI Dashboard','analytics')">
+        <div class="gmock" style="background:var(--bg3)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar gold w50"></div>
+            <div class="mrow" style="gap:5px">
+              <div style="flex:1;background:var(--surface);padding:7px;border:1px solid var(--border)"><div style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--gold)">87%</div><div class="mbar w50" style="margin-top:4px"></div></div>
+              <div style="flex:1;background:var(--surface);padding:7px;border:1px solid var(--border)"><div style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--teal)">24</div><div class="mbar w60" style="margin-top:4px"></div></div>
+            </div>
+            <div class="mchart">
+              <div class="mbar-v gold" style="height:35%"></div>
+              <div class="mbar-v gold" style="height:55%"></div>
+              <div class="mbar-v teal" style="height:80%"></div>
+              <div class="mbar-v gold" style="height:45%"></div>
+              <div class="mbar-v teal" style="height:70%"></div>
+              <div class="mbar-v blue" style="height:90%"></div>
+              <div class="mbar-v gold" style="height:60%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Ward Analytics Dashboard</div>
+          <div class="gov-tag">Dashboard · BI Module</div>
+          <div class="gov-cta">📅 Schedule Demo</div>
+        </div>
+      </div>
+
+      <!-- 3: VIDEO Handover -->
+      <div class="gitem" data-cat="video" onclick="openPopup('🎬 Demo Smart Handover','Video Demo · SBAR Handover Flow','handover-video')">
+        <div class="gmock" style="background:linear-gradient(160deg,#0a1a0f,#0d200f)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar teal w60"></div>
+            <div class="mtable">
+              <div class="mtr head"><div class="mdot tl"></div><div class="mline"></div></div>
+              <div class="mtr"><div class="mdot"></div><div class="mline"></div><div class="mline w40"></div></div>
+              <div class="mtr"><div class="mdot"></div><div class="mline"></div><div class="mline w30"></div></div>
+              <div class="mtr"><div class="mdot tl"></div><div class="mline"></div><div class="mline w50"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="vid-badge">VIDEO</div>
+        <div class="play-wrap">
+          <div class="play-btn"><svg width="16" height="16" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Demo: Smart Handover SBAR</div>
+          <div class="gov-tag">Video · 3 min Walkthrough</div>
+          <div class="gov-cta">📅 Book Full Demo</div>
+        </div>
+      </div>
+
+      <!-- 4: Medication Tracker -->
+      <div class="gitem" data-cat="screenshot" onclick="openPopup('💊 Medication Safety Tracker','Screenshot · Patient Safety Module','medication')">
+        <div class="gmock" style="background:var(--surface)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar gold w50"></div>
+            <div class="mtable">
+              <div class="mtr head"><div class="mdot"></div><div class="mline"></div></div>
+              <div class="mtr"><div class="mdot tl"></div><div class="mline"></div><div style="width:36px;height:12px;background:var(--teal-dim);border:1px solid rgba(62,207,142,0.3);border-radius:1px"></div></div>
+              <div class="mtr"><div class="mdot tl"></div><div class="mline"></div><div style="width:36px;height:12px;background:var(--teal-dim);border:1px solid rgba(62,207,142,0.3);border-radius:1px"></div></div>
+              <div class="mtr"><div class="mdot"></div><div class="mline"></div><div style="width:36px;height:12px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:1px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Medication Safety Tracker</div>
+          <div class="gov-tag">Screenshot · 5 Benar Module</div>
+          <div class="gov-cta">📅 Schedule Demo</div>
+        </div>
+      </div>
+
+      <!-- 5: VIDEO Full Walkthrough (wide) -->
+      <div class="gitem" data-cat="video" onclick="openPopup('🎬 Full App Walkthrough','Video Demo · Semua 8 Modul','full-video')">
+        <div class="gmock" style="background:linear-gradient(160deg,#060d1a,#0a1428)">
+          <div class="mock" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px">
+            <div style="background:var(--blue-dim);border:1px solid rgba(78,158,255,0.18);padding:10px">
+              <div class="mbar blue w60" style="margin-bottom:8px"></div>
+              <div class="mchart" style="height:40px">
+                <div class="mbar-v blue" style="height:50%"></div>
+                <div class="mbar-v blue" style="height:70%"></div>
+                <div class="mbar-v blue" style="height:55%"></div>
+                <div class="mbar-v blue" style="height:85%"></div>
+                <div class="mbar-v blue" style="height:45%"></div>
+              </div>
+            </div>
+            <div style="background:var(--gold-dim);border:1px solid rgba(201,168,76,0.18);padding:10px">
+              <div class="mbar gold w50" style="margin-bottom:8px"></div>
+              <div class="mtable">
+                <div class="mtr"><div class="mdot"></div><div class="mline"></div></div>
+                <div class="mtr"><div class="mdot"></div><div class="mline"></div></div>
+                <div class="mtr"><div class="mdot tl"></div><div class="mline"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vid-badge">VIDEO</div>
+        <div class="play-wrap">
+          <div class="play-btn" style="width:62px;height:62px"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Full App Walkthrough — Semua 8 Modul</div>
+          <div class="gov-tag">Video · 12 min Full Demo</div>
+          <div class="gov-cta">📅 Book Live Presentation</div>
+        </div>
+      </div>
+
+      <!-- 6: Performance Tracker -->
+      <div class="gitem" data-cat="dashboard" onclick="openPopup('🏆 Performance Tracker','Screenshot · HR &amp; Kinerja Perawat','performance')">
+        <div class="gmock" style="background:var(--bg3)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar gold w50"></div>
+            <div class="mprogress">
+              <div><div class="mbar w70" style="margin-bottom:4px"></div><div class="mprogressbar"><div class="mprogressfill" style="width:92%"></div></div></div>
+              <div><div class="mbar w60" style="margin-bottom:4px"></div><div class="mprogressbar"><div class="mprogressfill" style="width:78%;background:var(--teal)"></div></div></div>
+              <div><div class="mbar w65" style="margin-bottom:4px"></div><div class="mprogressbar"><div class="mprogressfill" style="width:85%;background:var(--blue)"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Nurse Performance Tracker</div>
+          <div class="gov-tag">Dashboard · HR Module</div>
+          <div class="gov-cta">📅 Schedule Demo</div>
+        </div>
+      </div>
+
+      <!-- 7: Clinical Alert -->
+      <div class="gitem" data-cat="screenshot" onclick="openPopup('🔔 Clinical Alert System','Screenshot · Early Warning Module','alert')">
+        <div class="gmock" style="background:var(--surface)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mbar teal w40"></div>
+            <div class="mnotif" style="margin-bottom:5px"><div class="mnotif-dot"></div><div style="flex:1"><div class="mbar w80"></div><div class="mbar w50" style="margin-top:4px"></div></div></div>
+            <div class="mnotif" style="border-color:rgba(201,168,76,0.22);background:var(--gold-dim)">
+              <div class="mnotif-dot" style="background:var(--gold)"></div>
+              <div style="flex:1"><div class="mbar w70"></div><div class="mbar w40" style="margin-top:4px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Clinical Alert System</div>
+          <div class="gov-tag">Screenshot · Early Warning</div>
+          <div class="gov-cta">📅 Schedule Demo</div>
+        </div>
+      </div>
+
+      <!-- 8: VIDEO Tablet view -->
+      <div class="gitem" data-cat="video" onclick="openPopup('🎬 Demo Live Presentasi','Video · Sesi Presentasi Langsung','live-demo')">
+        <div class="gmock" style="background:linear-gradient(135deg,#0d1a12,#141a0d)">
+          <div class="mock">
+            <div class="mock-header"><div class="mock-dot-r"></div><div class="mock-dot-y"></div><div class="mock-dot-g"></div><div class="mock-titlebar"></div></div>
+            <div class="mrow">
+              <div class="mcard" style="background:var(--teal-dim);border-color:rgba(62,207,142,0.2)">
+                <div class="mdot tl"></div>
+                <div class="mbar w80"></div>
+                <div class="mbar w60"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;flex:0.6">
+                <div style="height:26px;background:var(--gold-dim);border:1px solid var(--gold-dim)"></div>
+                <div style="height:26px;background:var(--border)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vid-badge">LIVE</div>
+        <div class="play-wrap">
+          <div class="play-btn"><svg width="16" height="16" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="goverlay">
+          <div class="gov-title">Demo Live Presentasi</div>
+          <div class="gov-tag">Video · Sesi Langsung</div>
+          <div class="gov-cta">📅 Request Live Session</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ROADMAP ═══════ -->
+<section id="roadmap">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Roadmap Pengembangan</div>
+      <h2 class="sec-title">Dari Spreadsheet<br>Menuju Ekosistem Digital</h2>
+      <p class="sec-sub">Perjalanan panjang yang didorong satu misi: mengembalikan waktu perawat untuk pasien, bukan untuk kertas.</p>
+    </div>
+    <div class="roadmap-items reveal">
+      <div class="ritem">
+        <div class="rphase"><div class="rphase-num">01</div><div class="rphase-yr">2022</div></div>
+        <div class="rcontent">
+          <div class="rtitle">Foundation — Daily Task Tracker</div>
+          <p class="rdesc">Dimulai dari Excel sederhana untuk mengelola tugas harian perawat di bangsal pediatrik. Solusi awal yang langsung terbukti memangkas waktu briefing shift dan mengurangi miskomunikasi.</p>
+          <span class="rstatus rs-done">✓ Selesai</span>
+        </div>
+      </div>
+      <div class="ritem">
+        <div class="rphase"><div class="rphase-num">02</div><div class="rphase-yr">2023</div></div>
+        <div class="rcontent">
+          <div class="rtitle">Expansion — Handover &amp; Documentation Module</div>
+          <p class="rdesc">Penambahan modul serah terima shift dengan format SBAR, medication tracker, dan sistem dokumentasi pasien yang terstandarisasi sesuai akreditasi JCI/SNARS.</p>
+          <span class="rstatus rs-done">✓ Selesai</span>
+        </div>
+      </div>
+      <div class="ritem">
+        <div class="rphase"><div class="rphase-num">03</div><div class="rphase-yr">2024</div></div>
+        <div class="rcontent">
+          <div class="rtitle">Intelligence — Power BI Dashboard &amp; Analytics</div>
+          <p class="rdesc">Integrasi Power BI dan dashboard analitik real-time untuk kepala ruangan. Laporan otomatis, indikator mutu layanan, dan pelacakan kinerja berbasis data objektif yang tidak bisa dibantah.</p>
+          <span class="rstatus rs-done">✓ Selesai</span>
+        </div>
+      </div>
+      <div class="ritem">
+        <div class="rphase"><div class="rphase-num">04</div><div class="rphase-yr">2025</div></div>
+        <div class="rcontent">
+          <div class="rtitle">Integration — HIS Bridge &amp; Multi-Unit Rollout</div>
+          <p class="rdesc">Pengembangan koneksi dua arah dengan sistem HIS utama rumah sakit dan ekspansi ke unit-unit lain di luar bangsal pediatrik. Target 3 unit baru dengan modul terkustomisasi.</p>
+          <span class="rstatus rs-active">Sedang Berjalan</span>
+        </div>
+      </div>
+      <div class="ritem">
+        <div class="rphase"><div class="rphase-num">05</div><div class="rphase-yr">2026</div></div>
+        <div class="rcontent">
+          <div class="rtitle">Scale — Multi-Hospital Platform &amp; Mobile App</div>
+          <p class="rdesc">Transformasi menjadi platform berbasis web dan mobile yang dapat diadopsi rumah sakit lain. API terbuka, modul kustomisasi per institusi, dan model lisensi yang berkelanjutan.</p>
+          <span class="rstatus rs-plan">→ Direncanakan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA ═══════ -->
+<section id="cta">
+  <div class="cta-bg-el"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="sec-eyebrow" style="justify-content:center">
+        <span style="width:24px;height:1px;background:var(--gold);display:inline-block"></span>
+        Tertarik?
+      </div>
+      <h2 class="cta-title">Jadwalkan Demo<br><em>Nurse Sync App</em></h2>
+      <p class="cta-sub">Lihat sendiri bagaimana Nurse Sync App dapat mengubah alur kerja keperawatan di institusi Anda — sesi demo 30 menit, online atau tatap muka di Mayapada Hospital.</p>
+      <div class="cta-btns">
+        <button class="btn btn-gold" onclick="openPopup('📱 Nurse Sync App','Book a Demo — CTA','cta-main')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book a Demo Sekarang
+        </button>
+        <a href="https://wa.me/6282388308450?text=Halo%20Arief!%20Saya%20ingin%20menjadwalkan%20demo%20untuk%20Nurse%20Sync%20App.%20Kapan%20waktu%20yang%20tersedia%3F" target="_blank" class="btn btn-wa">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat via WhatsApp
+        </a>
+        <a href="portfolio_arief.html" class="btn btn-outline">← Kembali ke Portfolio</a>
+      </div>
+      <p class="cta-note">Respon dalam 1–2 jam di hari kerja &nbsp;·&nbsp; +62 823-8830-8450 &nbsp;·&nbsp; linkedin.com/in/fardianarief</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">M. Arief <em>Fardhiansyah</em></div>
+      <div class="footer-copy">© 2025 · Nurse Sync App — Project Detail</div>
+      <a href="portfolio_arief.html" class="footer-back">← Portfolio</a>
+    </div>
+  </div>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ═══════ POPUP ═══════ -->
+<div class="popup-bg" id="popupBg" onclick="handleBgClick(event)">
+  <div class="popup-box" id="popupBox">
+    <div class="popup-ribbon"></div>
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-inner">
+      <div class="popup-emoji" id="pEmoji">📅</div>
+      <h3 class="popup-title" id="pTitle">Book a Demo</h3>
+      <p class="popup-sub">Tertarik melihat <strong id="pItemName">fitur ini</strong> lebih detail? Pilih cara paling nyaman untuk Anda.</p>
+      <div class="popup-ref">
+        <div class="popup-ref-icon" id="pRefIcon">📱</div>
+        <div>
+          <div class="popup-ref-name" id="pRefName">Nurse Sync App</div>
+          <div class="popup-ref-type" id="pRefType">Project Demo</div>
+        </div>
+      </div>
+      <div class="popup-opts">
+        <a id="pOpt1" href="#" target="_blank" class="popt">
+          <span class="popt-ico">📅</span>
+          <div><strong>Jadwalkan Presentasi Langsung</strong><span>Demo 30–45 menit online atau tatap muka di Mayapada Hospital</span></div>
+        </a>
+        <a id="pOpt2" href="#" target="_blank" class="popt">
+          <span class="popt-ico">🎬</span>
+          <div><strong>Minta Link Video Demo</strong><span>Akses video walkthrough lengkap semua 8 modul (12 menit)</span></div>
+        </a>
+        <a id="pOpt3" href="#" target="_blank" class="popt">
+          <span class="popt-ico">📋</span>
+          <div><strong>Request Proposal / Brosur</strong><span>Dokumen spesifikasi teknis dan benefit Nurse Sync App</span></div>
+        </a>
+      </div>
+      <div class="popup-or">atau hubungi langsung</div>
+      <a id="pWaDirect" href="#" target="_blank" class="popup-wa-btn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Hubungi Langsung via WhatsApp
+      </a>
+      <p class="popup-hint">💬 Biasanya respon dalam 1–2 jam · +62 823-8830-8450</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── THEME ─── */
+var themeBtn=document.getElementById('themeBtn');
+var html=document.documentElement;
+function getTheme(){return html.getAttribute('data-theme')||'dark'}
+function setTheme(t){
+  html.setAttribute('data-theme',t);
+  themeBtn.textContent=t==='dark'?'🌙':'☀️';
+  try{sessionStorage.setItem('af-theme',t)}catch(e){}
+}
+setTheme(getTheme());
+themeBtn.onclick=function(){setTheme(getTheme()==='dark'?'light':'dark')};
+if(window.matchMedia){
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(e){
+    try{if(!sessionStorage.getItem('af-theme'))setTheme(e.matches?'dark':'light')}catch(er){setTheme(e.matches?'dark':'light')}
+  });
+}
+
+/* ─── SCROLL ─── */
+window.addEventListener('scroll',function(){
+  document.getElementById('btt').classList.toggle('show',window.scrollY>400);
+},{passive:true});
+
+/* ─── REVEAL ─── */
+var ro=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el)});
+
+/* ─── GALLERY FILTER ─── */
+function filterGallery(cat,btn){
+  document.querySelectorAll('.gf-btn').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  document.querySelectorAll('#galleryGrid .gitem').forEach(function(item){
+    item.style.display=(cat==='all'||item.dataset.cat===cat)?'':'none';
+  });
+}
+
+/* ─── POPUP ─── */
+var WA='https://wa.me/6282388308450?text=';
+function enc(s){return encodeURIComponent(s)}
+
+function openPopup(refName,refType,ctx){
+  var base='Halo Arief! Saya tertarik dengan Nurse Sync App — '+refName+'.';
+  document.getElementById('pItemName').textContent=refName;
+  document.getElementById('pRefName').textContent=refName;
+  document.getElementById('pRefType').textContent=refType;
+
+  /* icon */
+  var ico=document.getElementById('pRefIcon');
+  if(refType.toLowerCase().indexOf('video')!==-1||refType.toLowerCase().indexOf('live')!==-1)ico.textContent='🎬';
+  else if(refType.toLowerCase().indexOf('dashboard')!==-1)ico.textContent='📊';
+  else ico.textContent='📱';
+
+  /* wa links */
+  document.getElementById('pOpt1').href=WA+enc(base+' Saya ingin menjadwalkan sesi presentasi/demo langsung Nurse Sync App. Kapan Anda tersedia?');
+  document.getElementById('pOpt2').href=WA+enc(base+' Bisakah Anda kirimkan link video demo lengkap semua modul Nurse Sync App?');
+  document.getElementById('pOpt3').href=WA+enc(base+' Saya ingin menerima proposal atau brosur lengkap beserta spesifikasi teknis Nurse Sync App.');
+  document.getElementById('pWaDirect').href=WA+enc('Halo Arief! Saya tertarik dengan Nurse Sync App ('+refName+') dan ingin berdiskusi lebih lanjut. Bisa kita atur waktu untuk berbicara?');
+
+  document.getElementById('popupBg').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closePopup(){
+  document.getElementById('popupBg').classList.remove('show');
+  document.body.style.overflow='';
+}
+function handleBgClick(e){
+  if(e.target===document.getElementById('popupBg'))closePopup();
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePopup()});
+</script>
+</body>
+</html>
