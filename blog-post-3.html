@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nursing in the Age of AI — What to Learn, What to Use, and What to Guard Against · Arief Fardhiansyah</title>
+<meta name="description" content="A deep and honest examination of artificial intelligence for nurses — the skills worth building, the tools worth using, the risks worth understanding, and how to stay irreplaceably human in a world of intelligent machines.">
+<meta property="og:title" content="Nursing in the Age of AI — What to Learn, What to Use, and What to Guard Against">
+<meta property="og:description" content="AI is entering the ward. Here is what every nurse needs to know — not from a technology perspective, but from a clinical one.">
+<script>
+(function(){
+  try{var s=sessionStorage.getItem('af-theme');if(s){document.documentElement.setAttribute('data-theme',s);return;}}catch(e){}
+  var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+  document.documentElement.setAttribute('data-theme',d?'dark':'light');
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══ */
+:root,[data-theme="dark"]{
+  --bg:#0d0f12;--bg2:#141619;--bg3:#1a1d22;--surface:#1f2228;--surface2:#252a32;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.10);--border3:rgba(255,255,255,0.14);
+  --text:#e6e8ec;--text2:#8c95a6;--text3:#52596a;
+  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:rgba(201,168,76,0.10);--gold-glow:rgba(201,168,76,0.25);
+  --teal:#3ecf8e;--teal-dim:rgba(62,207,142,0.08);
+  --blue:#4e9eff;--blue-dim:rgba(78,158,255,0.08);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.08);
+  --red:#ff5a5a;--red-dim:rgba(255,90,90,0.08);
+  --nav-bg:rgba(13,15,18,0.95);--nav-h:64px;--tr:0.28s ease;
+  --shadow:0 20px 60px rgba(0,0,0,0.55);
+  --mono:'JetBrains Mono',monospace;
+}
+[data-theme="light"]{
+  --bg:#f5f3ee;--bg2:#eeebe4;--bg3:#e6e3dc;--surface:#ffffff;--surface2:#f0ede6;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.11);--border3:rgba(0,0,0,0.15);
+  --text:#1a1714;--text2:#4a4238;--text3:#7a6e62;
+  --gold:#8a6200;--gold2:#a07800;--gold-dim:rgba(138,98,0,0.08);--gold-glow:rgba(138,98,0,0.2);
+  --teal:#1a7a52;--teal-dim:rgba(26,122,82,0.07);
+  --blue:#1a5aaa;--blue-dim:rgba(26,90,170,0.07);
+  --purple:#6d28d9;--purple-dim:rgba(109,40,217,0.07);
+  --red:#c0392b;--red-dim:rgba(192,57,43,0.07);
+  --nav-bg:rgba(238,235,228,0.96);
+  --shadow:0 20px 60px rgba(0,0,0,0.10);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background var(--tr),color var(--tr);line-height:1.7}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.15}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--nav-h);background:var(--nav-bg);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);transition:background var(--tr)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:760px;margin:0 auto;padding:0 24px;height:100%}
+.nav-back{display:inline-flex;align-items:center;gap:8px;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);transition:color var(--tr)}
+.nav-back svg{transition:transform var(--tr)}
+.nav-back:hover{color:var(--gold)}
+.nav-back:hover svg{transform:translateX(-3px)}
+.nav-brand{font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--text2)}
+.nav-brand em{color:var(--gold);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:10px}
+.theme-btn{width:34px;height:34px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:0.88rem;display:flex;align-items:center;justify-content:center;transition:all var(--tr);border-radius:2px}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ═══ LAYOUT ═══ */
+.article-wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+/* ═══ COVER ═══ */
+.cover{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-top:var(--nav-h)}
+.cover-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 800px 600px at 80% 20%,rgba(167,139,250,0.07) 0%,transparent 65%),
+    radial-gradient(ellipse 500px 400px at 5% 80%,rgba(78,158,255,0.05) 0%,transparent 60%),
+    radial-gradient(ellipse 400px 300px at 50% 55%,rgba(201,168,76,0.04) 0%,transparent 60%),
+    var(--bg);
+}
+[data-theme="light"] .cover-bg{
+  background:
+    radial-gradient(ellipse 800px 600px at 80% 20%,rgba(109,40,217,0.05) 0%,transparent 65%),
+    radial-gradient(ellipse 500px 400px at 5% 80%,rgba(26,90,170,0.04) 0%,transparent 60%),
+    var(--bg);
+}
+.cover-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:radial-gradient(circle,var(--border2) 1px,transparent 1px);
+  background-size:38px 38px;
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 80%);
+  animation:gb 7s ease-in-out infinite;
+}
+@keyframes gb{0%,100%{opacity:0.3}50%{opacity:0.6}}
+/* Purple side accent — unique to this article */
+.cover-accent{position:absolute;left:0;top:0;bottom:0;width:3px;z-index:2;background:linear-gradient(to bottom,transparent,var(--purple) 30%,var(--blue) 70%,transparent)}
+.cover-content{position:relative;z-index:1;padding:72px 24px 80px;max-width:760px;margin:0 auto;width:100%}
+
+.cover-kicker{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.cover-kicker::before{content:'';width:28px;height:1px;background:var(--purple)}
+.cover-kicker span{color:var(--purple)}
+
+.cover-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border:1px solid;border-radius:2px}
+.badge-ai{color:var(--purple);border-color:rgba(167,139,250,0.35);background:var(--purple-dim)}
+.badge-depth{color:var(--blue);border-color:rgba(78,158,255,0.3);background:var(--blue-dim)}
+.badge-cat{color:var(--text3);border-color:var(--border2);background:transparent}
+
+.cover-title{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:700;line-height:1.05;letter-spacing:-0.02em;margin-bottom:20px}
+.cover-title em{color:var(--purple);font-style:italic;display:block}
+.cover-lead{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--text2);line-height:1.82;max-width:580px;margin-bottom:40px;font-weight:300}
+.cover-lead strong{color:var(--text)}
+
+.author-bar{display:flex;align-items:center;gap:16px}
+.author-photo{width:48px;height:48px;border-radius:50%;overflow:hidden;border:1.5px solid var(--border2);flex-shrink:0;background:var(--surface)}
+.author-photo img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.author-name{font-size:0.88rem;font-weight:700;margin-bottom:2px}
+.author-title{font-size:0.72rem;color:var(--text3);font-family:var(--mono)}
+.author-date{font-size:0.7rem;color:var(--text3);margin-top:4px}
+
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:6px;position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;opacity:0.5}
+.scroll-hint span{font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3)}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--purple),transparent)}
+
+/* ═══ HERO IMAGE ═══ */
+.hero-img{width:100%;aspect-ratio:21/9;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-img-caption{position:absolute;bottom:16px;right:20px;font-size:0.62rem;color:rgba(255,255,255,0.55);font-family:var(--mono);background:rgba(0,0,0,0.5);padding:4px 10px;backdrop-filter:blur(4px)}
+[data-theme="light"] .hero-img-caption{color:rgba(0,0,0,0.55);background:rgba(255,255,255,0.6)}
+
+/* ═══ PROSE ═══ */
+.prose{padding:72px 0;border-bottom:1px solid var(--border)}
+.prose p{font-size:1rem;color:var(--text2);line-height:1.9;margin-bottom:24px;font-weight:300}
+.prose p strong{color:var(--text);font-weight:700}
+.prose p em{color:var(--purple);font-style:italic}
+.prose h2{font-size:clamp(1.45rem,3vw,1.9rem);font-weight:700;color:var(--text);margin:56px 0 20px;display:flex;align-items:flex-start;gap:14px}
+.prose h2 .h-num{font-family:var(--mono);font-size:0.7rem;font-weight:500;color:var(--purple);margin-top:8px;flex-shrink:0;opacity:0.7}
+.prose h3{font-size:1.12rem;font-weight:700;color:var(--text);margin:36px 0 12px}
+
+/* ═══ PULL QUOTE ═══ */
+.pullquote{margin:48px 0;padding:32px 32px 32px 28px;border-left:3px solid var(--purple);background:var(--purple-dim);position:relative}
+.pullquote-text{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.1rem,2.2vw,1.35rem);line-height:1.72;color:var(--text);margin-bottom:14px}
+.pullquote-attr{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple)}
+
+/* ═══ INLINE IMAGE ═══ */
+.inline-img{margin:44px 0}
+.inline-img img{width:100%;border-radius:2px;border:1px solid var(--border2)}
+.inline-img figcaption{margin-top:10px;font-size:0.72rem;color:var(--text3);font-family:var(--mono);display:flex;align-items:center;gap:8px}
+.inline-img figcaption::before{content:'';width:20px;height:1px;background:var(--purple);flex-shrink:0}
+
+/* ═══ PHOTO FRAME ═══ */
+.photo-frame{margin:48px 0;position:relative}
+.photo-frame img{width:100%;border:1px solid var(--border2);display:block}
+.photo-frame-label{position:absolute;top:16px;left:0;background:var(--purple);color:#fff;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:5px 14px}
+.photo-frame figcaption{margin-top:10px;font-size:0.72rem;color:var(--text3);font-family:var(--mono)}
+
+/* ═══ SKILL CARDS ═══ */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:44px 0}
+.skill-card{background:var(--surface);padding:28px;position:relative;overflow:hidden;transition:background var(--tr)}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);transform:scaleX(0);transform-origin:left;transition:transform var(--tr)}
+.skill-card:hover{background:var(--surface2)}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-card-icon{font-size:1.8rem;margin-bottom:14px}
+.skill-card-level{display:inline-block;padding:2px 9px;border:1px solid var(--border2);font-family:var(--mono);font-size:0.58rem;color:var(--text3);margin-bottom:12px}
+.skill-card-level.urgent{border-color:rgba(167,139,250,0.4);color:var(--purple)}
+.skill-card-level.important{border-color:rgba(201,168,76,0.4);color:var(--gold)}
+.skill-card-level.useful{border-color:rgba(62,207,142,0.4);color:var(--teal)}
+.skill-card-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:9px}
+.skill-card-desc{font-size:0.83rem;color:var(--text2);line-height:1.75}
+.skill-card-why{margin-top:12px;font-size:0.78rem;font-style:italic;color:var(--text3);padding-top:10px;border-top:1px solid var(--border)}
+
+/* ═══ TOOLS GRID ═══ */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:44px 0}
+.tool-card{background:var(--surface);padding:22px;transition:background var(--tr);cursor:default}
+.tool-card:hover{background:var(--surface2)}
+.tool-icon{font-size:1.5rem;margin-bottom:10px}
+.tool-cat{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.tool-name{font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;margin-bottom:7px}
+.tool-use{font-size:0.8rem;color:var(--text2);line-height:1.65}
+.tool-verdict{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:0.65rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;padding:3px 9px;border:1px solid}
+.verdict-yes{color:var(--teal);border-color:rgba(62,207,142,0.3)}
+.verdict-caution{color:var(--gold);border-color:rgba(201,168,76,0.3)}
+.verdict-no{color:var(--red);border-color:rgba(255,90,90,0.3)}
+
+/* ═══ PRO / CON PANELS ═══ */
+.procon{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:44px 0}
+.procon-panel{padding:28px;background:var(--surface)}
+.procon-head{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:9px}
+.procon-head::before{content:'';width:14px;height:1px}
+.head-pro{color:var(--teal)}.head-pro::before{background:var(--teal)}
+.head-con{color:var(--red)}.head-con::before{background:var(--red)}
+.procon-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.procon-item{display:flex;align-items:flex-start;gap:11px;font-size:0.87rem;color:var(--text2);line-height:1.65}
+.pi-icon{flex-shrink:0;margin-top:2px;font-size:0.8rem;width:18px}
+
+/* ═══ AVOID LIST ═══ */
+.avoid-list{margin:36px 0;display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.avoid-item{background:var(--surface);padding:22px 24px;display:grid;grid-template-columns:48px 1fr;gap:18px;align-items:start;transition:background var(--tr)}
+.avoid-item:hover{background:var(--surface2)}
+.avoid-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--red);opacity:0.35;line-height:1;padding-top:2px}
+.avoid-title{font-family:'Playfair Display',serif;font-size:0.98rem;font-weight:700;margin-bottom:7px;color:var(--text)}
+.avoid-desc{font-size:0.85rem;color:var(--text2);line-height:1.75}
+.avoid-why{margin-top:10px;font-size:0.78rem;font-style:italic;color:var(--red);opacity:0.8;display:flex;align-items:flex-start;gap:7px}
+
+/* ═══ STAT ROW ═══ */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:44px 0}
+.stat-box{background:var(--surface);padding:28px 20px;text-align:center}
+.stat-box-n{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;line-height:1;margin-bottom:8px}
+.stat-box-n.purple{color:var(--purple)}
+.stat-box-n.blue{color:var(--blue)}
+.stat-box-n.gold{color:var(--gold)}
+.stat-box-l{font-size:0.75rem;color:var(--text2);line-height:1.55;max-width:120px;margin:0 auto}
+
+/* ═══ CALLOUT ═══ */
+.callout{margin:40px 0;padding:22px 24px;border:1px solid var(--border2);background:var(--surface);display:flex;gap:16px;align-items:flex-start}
+.callout-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.callout-body{flex:1}
+.callout-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:7px}
+.callout-text{font-size:0.87rem;color:var(--text2);line-height:1.75}
+.callout-purple .callout-title{color:var(--purple)}
+.callout-purple{border-color:rgba(167,139,250,0.2);background:var(--purple-dim)}
+.callout-gold .callout-title{color:var(--gold)}
+.callout-gold{border-color:rgba(201,168,76,0.2);background:var(--gold-dim)}
+.callout-warn .callout-title{color:var(--red)}
+.callout-warn{border-color:rgba(255,90,90,0.2);background:var(--red-dim)}
+
+/* ═══ CHECKLIST ═══ */
+.checklist{margin:24px 0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.checklist li{display:flex;align-items:flex-start;gap:13px;font-size:0.9rem;color:var(--text2);line-height:1.65}
+.cl-icon{flex-shrink:0;color:var(--purple);margin-top:3px}
+
+/* ═══ MONO BLOCK ═══ */
+.mono-block{margin:32px 0;padding:20px 22px;background:var(--bg2);border:1px solid var(--border2);font-family:var(--mono);font-size:0.78rem;color:var(--text2);line-height:1.85;border-left:2.5px solid var(--purple)}
+.mono-block .ml{color:var(--text3)}
+.mono-block .mv{color:var(--purple)}
+.mono-block .mk{color:var(--gold)}
+.mono-block .mt{color:var(--teal)}
+
+/* ═══ HUMAN SKILLS BOX ═══ */
+.human-strip{margin:44px 0;background:var(--surface);border:1px solid var(--border2);padding:32px;position:relative;overflow:hidden}
+.human-strip::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--purple),var(--blue),var(--teal),var(--gold))}
+.human-strip-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.human-strip-sub{font-size:0.82rem;color:var(--text3);margin-bottom:24px;font-family:var(--mono)}
+.human-pills{display:flex;flex-wrap:wrap;gap:8px}
+.human-pill{padding:7px 16px;border:1px solid var(--border2);font-size:0.8rem;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:7px;transition:all var(--tr)}
+.human-pill:hover{border-color:var(--gold);color:var(--gold)}
+.hp-dot{width:6px;height:6px;background:var(--gold);flex-shrink:0}
+
+/* ═══ DIVIDER ═══ */
+.divider{display:flex;align-items:center;gap:16px;margin:56px 0;opacity:0.4}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.divider-sym{font-size:0.7rem;color:var(--text3);letter-spacing:0.2em}
+
+/* ═══ AUTHOR CARD ═══ */
+.author-card{margin:56px 0;padding:32px;background:var(--surface);border:1px solid var(--border2);display:grid;grid-template-columns:80px 1fr;gap:24px;align-items:start}
+.author-card-photo{width:80px;height:80px;border-radius:50%;overflow:hidden;border:1.5px solid var(--border2)}
+.author-card-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+.author-card-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.author-card-role{font-size:0.72rem;color:var(--purple);font-family:var(--mono);margin-bottom:12px}
+.author-card-bio{font-size:0.86rem;color:var(--text2);line-height:1.78}
+.author-card-links{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.author-link{padding:6px 14px;border:1px solid var(--border2);font-size:0.68rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);transition:all var(--tr);display:inline-flex;align-items:center;gap:6px}
+.author-link:hover{border-color:var(--gold);color:var(--gold)}
+.author-link-wa{border-color:rgba(34,197,94,0.3);color:#22c55e}
+.author-link-wa:hover{border-color:#22c55e;background:rgba(34,197,94,0.08)}
+
+/* ═══ CTA ═══ */
+.cta-strip{padding:56px 0;border-top:1px solid var(--border)}
+.cta-inner{padding:44px;background:var(--surface);border:1px solid var(--border2);position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--blue),var(--teal))}
+.cta-eyebrow{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.cta-eyebrow::before{content:'';width:22px;height:1px;background:var(--purple)}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;margin-bottom:12px}
+.cta-title em{color:var(--gold);font-style:italic}
+.cta-sub{font-size:0.9rem;color:var(--text2);line-height:1.78;max-width:480px;margin-bottom:28px}
+.cta-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-family:'Lato',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:all var(--tr);cursor:pointer;border-radius:2px}
+.btn-purple{border:1.5px solid var(--purple);background:var(--purple);color:#fff}
+.btn-purple:hover{opacity:0.88;transform:translateY(-2px);box-shadow:0 8px 24px rgba(167,139,250,0.3)}
+.btn-gold{border:1.5px solid var(--gold);background:var(--gold);color:var(--bg)}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-glow)}
+.btn-outline{border:1px solid var(--border2);background:transparent;color:var(--text2)}
+.btn-outline:hover{border-color:var(--text);color:var(--text);transform:translateY(-2px)}
+.btn-wa{border:1.5px solid #22c55e;background:#22c55e;color:#fff}
+.btn-wa:hover{background:#16a34a;border-color:#16a34a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,0.3)}
+
+/* ═══ TAGS ═══ */
+.tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:40px}
+.post-tag{padding:4px 12px;border:1px solid var(--border2);font-size:0.65rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);transition:all var(--tr)}
+.post-tag:hover{border-color:var(--purple);color:var(--purple)}
+
+/* ═══ PROGRESS ═══ */
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--purple),var(--blue));z-index:1001;transition:width 0.1s linear;width:0%}
+
+/* ═══ FOOTER ═══ */
+footer{padding:40px 0;border-top:1px solid var(--border)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.footer-brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700}
+.footer-brand em{color:var(--gold);font-style:normal}
+.footer-copy{font-size:0.72rem;color:var(--text3)}
+.footer-back{font-size:0.7rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px;transition:color var(--tr)}
+.footer-back:hover{color:var(--gold)}
+
+/* ═══ BTT ═══ */
+.btt{position:fixed;bottom:28px;right:28px;z-index:500;width:42px;height:42px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all var(--tr);opacity:0;transform:translateY(10px);pointer-events:none}
+.btt.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.btt:hover{border-color:var(--purple);color:var(--purple)}
+
+/* ═══ REVEAL ═══ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:680px){
+  .skills-grid,.procon,.tools-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .stat-row .stat-box:last-child{grid-column:span 2}
+  .author-card{grid-template-columns:1fr;text-align:center}
+  .author-card-photo{margin:0 auto}
+  .author-card-links{justify-content:center}
+  .cta-btns{flex-direction:column}
+  .cover-title{font-size:2.2rem}
+  .hero-img{aspect-ratio:4/3}
+  .footer-inner{flex-direction:column;text-align:center;gap:12px}
+  .avoid-item{grid-template-columns:36px 1fr;gap:12px}
+  .avoid-num{font-size:1.5rem}
+}
+@media(max-width:400px){
+  .prose h2{font-size:1.35rem}
+  .stat-row{grid-template-columns:1fr}
+  .stat-row .stat-box:last-child{grid-column:span 1}
+  .human-pills{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="https://fardianarief.github.io/My-Portfolio/" class="nav-back">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Portfolio
+    </a>
+    <div class="nav-brand">Arief <em>Fardhiansyah</em></div>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-accent"></div>
+  <div class="cover-content">
+    <div class="cover-kicker">Deep Dive &nbsp;<span>Nursing × Artificial Intelligence</span></div>
+    <div class="cover-meta">
+      <span class="badge badge-ai">AI in Healthcare</span>
+      <span class="badge badge-depth">In-Depth · 14 min</span>
+      <span class="badge badge-cat">Apr 2025</span>
+    </div>
+    <h1 class="cover-title">
+      Nursing in the<br>
+      <em>Age of AI</em>
+    </h1>
+    <p class="cover-lead">
+      Artificial intelligence is no longer arriving — it is already here, quietly embedded 
+      in the tools nurses use every day. <strong>What every nurse needs now is not a fear 
+      of AI, but a fluency with it:</strong> knowing what to trust, what to question, 
+      what to build, and what to protect from the machine entirely.
+    </p>
+    <div class="author-bar">
+      <div>
+        <div class="author-name">Ns. M. Arief Fardhiansyah, S.Kep</div>
+        <div class="author-title">HIS Officer · Data Analyst · Registered Nurse</div>
+        <div class="author-date">Published April 2025 · South Jakarta, Indonesia</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Read</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- HERO IMAGE -->
+<figure class="hero-img">
+  <img
+    src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1400&q=80&fit=crop"
+    alt="Abstract visualization of artificial intelligence data flows and neural networks in blue and purple tones"
+    loading="eager"
+  >
+  <div class="hero-img-caption">The architecture of artificial intelligence — patterns learned from millions of data points · Unsplash</div>
+</figure>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+<article class="prose">
+
+  <p>
+    There is a question circulating in nursing schools, break rooms, and clinical 
+    conferences across the world right now, spoken in different tones depending on 
+    who is asking: <em>Is AI going to replace us?</em>
+  </p>
+  <p>
+    The short answer is no — not in the way the question implies. But the longer, 
+    more honest answer is this: <strong>AI will not replace nurses, but nurses who 
+    understand and use AI thoughtfully will have a significant advantage over those 
+    who do not.</strong> That gap is widening every year.
+  </p>
+  <p>
+    This article is a comprehensive guide for nurses at every career stage — from 
+    fresh graduates to senior clinicians — on how to navigate the age of artificial 
+    intelligence with confidence, critical thinking, and professional integrity. 
+    It covers the skills worth building, the tools worth using, the dangers worth 
+    avoiding, and the irreplaceable human qualities every nurse should actively protect.
+  </p>
+
+  <div class="pullquote reveal">
+    <div class="pullquote-text">
+      "The nurse who understands AI will not be replaced by it. 
+       The nurse who ignores AI will eventually be replaced by the nurse who doesn't."
+    </div>
+    <div class="pullquote-attr">— Adapted from a principle in digital health literacy</div>
+  </div>
+
+  <!-- ─── SECTION 1 ─── -->
+  <h2><span class="h-num">01</span> Understanding What AI Actually Is — and Isn't</h2>
+
+  <p>
+    Before a nurse can use AI well, she needs an accurate mental model of what it is. 
+    Not a technical one — but a <em>conceptual</em> one. Most of the mistakes nurses 
+    make with AI tools stem not from malice or carelessness, but from a fundamental 
+    misunderstanding of how these systems work.
+  </p>
+  <p>
+    AI, in its current clinical form, is a <strong>pattern recognition engine trained 
+    on historical data</strong>. It does not think. It does not understand. It does 
+    not feel. It identifies statistical correlations in vast datasets and produces 
+    outputs — predictions, suggestions, transcriptions, classifications — based on 
+    patterns it has seen before.
+  </p>
+  <p>
+    This matters enormously in clinical practice, because patients are not patterns. 
+    They are individuals with histories, fears, relationships, and presentations that 
+    fall outside the distribution of whatever dataset trained the model in front of you.
+  </p>
+
+  <div class="mono-block reveal">
+    <span class="ml">// What AI does well:</span><br>
+    <span class="mt">→  Processing large volumes of structured data quickly</span><br>
+    <span class="mt">→  Identifying patterns that are statistically common</span><br>
+    <span class="mt">→  Reducing repetitive administrative cognitive load</span><br>
+    <span class="mt">→  Flagging anomalies against established baselines</span><br><br>
+    <span class="ml">// What AI cannot do:</span><br>
+    <span class="mv">→  Understand context the way a clinician at the bedside does</span><br>
+    <span class="mv">→  Account for what is not in the data</span><br>
+    <span class="mv">→  Feel the shift in a patient's affect that precedes deterioration</span><br>
+    <span class="mv">→  Hold a grieving family's hand and mean it</span>
+  </div>
+
+  <!-- inline image 1 -->
+  <figure class="inline-img reveal">
+    <img
+      src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1000&q=80&fit=crop"
+      alt="Close-up of a doctor or nurse reviewing patient data on a digital tablet"
+    >
+    <figcaption>Clinical judgment requires integrating data with human observation — something no AI currently replicates · Unsplash</figcaption>
+  </figure>
+
+  <!-- ─── SECTION 2 ─── -->
+  <h2><span class="h-num">02</span> Skills Every Nurse Should Build Now</h2>
+
+  <p>
+    These are not optional extras for the technically inclined. They are becoming 
+    foundational competencies for any nurse who will practice beyond the next five years. 
+    The good news: none of them require a computer science degree.
+  </p>
+
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="skill-card-icon">🔍</div>
+      <div class="skill-card-level urgent">Urgent · Build Now</div>
+      <div class="skill-card-title">AI Output Verification</div>
+      <div class="skill-card-desc">The ability to critically evaluate what an AI system produces — not accepting its output as ground truth, but interrogating it against your clinical judgment and the patient in front of you.</div>
+      <div class="skill-card-why">An AI sepsis alert means nothing if you don't know what to look for clinically to confirm or reject it.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">📊</div>
+      <div class="skill-card-level urgent">Urgent · Build Now</div>
+      <div class="skill-card-title">Basic Data Literacy</div>
+      <div class="skill-card-desc">Understanding what a percentage means in a clinical context. Reading a sensitivity vs. specificity curve. Knowing the difference between correlation and causation in a patient report. These are no longer skills reserved for researchers.</div>
+      <div class="skill-card-why">You cannot challenge an AI recommendation if you cannot understand what it is based on.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">💬</div>
+      <div class="skill-card-level important">Important · 6–12 Months</div>
+      <div class="skill-card-title">Effective AI Prompting</div>
+      <div class="skill-card-desc">How you ask an AI tool a question determines the quality of the answer. Structured, specific, contextual prompts produce clinical-grade responses. Vague questions produce generic noise. This is a learnable skill.</div>
+      <div class="skill-card-why">The same AI tool will give very different outputs to "What causes high fever?" vs. "My 3-year-old patient has fever 39.8°C, day 3, no source. Differentials?"</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🛡️</div>
+      <div class="skill-card-level important">Important · Build Alongside</div>
+      <div class="skill-card-title">Digital Privacy Literacy</div>
+      <div class="skill-card-desc">Understanding which types of patient information should never enter a consumer AI tool, what data residency means, and how to identify when a vendor's AI clause creates a confidentiality risk for your patients.</div>
+      <div class="skill-card-why">Using ChatGPT to summarize a patient case with identifiable details is a privacy violation — even if no one catches it.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🧩</div>
+      <div class="skill-card-level useful">Useful · Progressive Learning</div>
+      <div class="skill-card-title">Workflow Automation Basics</div>
+      <div class="skill-card-desc">Simple tools — structured spreadsheets, form automation, template logic — allow nurses to reduce repetitive tasks without coding. Understanding the logic of automation gives you the ability to identify what should be automated vs. what must remain human.</div>
+      <div class="skill-card-why">Not every task that can be automated should be. The nurse who understands this makes better decisions than the one who does not.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🗣️</div>
+      <div class="skill-card-level useful">Useful · Long-Term Investment</div>
+      <div class="skill-card-title">AI Advocacy in Clinical Settings</div>
+      <div class="skill-card-desc">The ability to translate between clinical needs and technology capabilities — explaining to a procurement team why a feature is clinically dangerous, or advocating for a nurse-facing AI tool that actually addresses the right problem.</div>
+      <div class="skill-card-why">Nurses who can bridge clinical and technical language will shape how AI is deployed in their institutions — for better or worse.</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 3 ─── -->
+  <h2><span class="h-num">03</span> AI Tools Worth Using in Clinical Practice</h2>
+
+  <p>
+    There is a growing ecosystem of AI tools relevant to nursing practice. Not all are 
+    created equal. Some are genuinely useful. Some are premature. Some are dangerous 
+    in the wrong hands. The following is an honest evaluation across the categories most 
+    relevant to nurses today.
+  </p>
+
+  <div class="tools-grid reveal">
+    <div class="tool-card">
+      <div class="tool-icon">📝</div>
+      <div class="tool-cat">Documentation Assistance</div>
+      <div class="tool-name">AI Note Structuring</div>
+      <div class="tool-use">Tools that convert spoken or rough clinical notes into structured documentation. Reduces time from event to record, especially useful in busy shifts.</div>
+      <div class="tool-verdict verdict-yes">✓ Recommended — with verification</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🚨</div>
+      <div class="tool-cat">Early Warning Systems</div>
+      <div class="tool-name">Predictive Deterioration Alerts</div>
+      <div class="tool-use">Algorithms that analyze vitals and lab trends to flag patients at risk of sepsis, respiratory failure, or cardiac events earlier than standard observation cycles.</div>
+      <div class="tool-verdict verdict-yes">✓ High value — never override clinical judgment</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">💊</div>
+      <div class="tool-cat">Medication Safety</div>
+      <div class="tool-name">AI Drug Interaction Checkers</div>
+      <div class="tool-use">Real-time screening of multi-drug regimens against interaction databases. Particularly valuable in polypharmacy patients — geriatrics, ICU, complex chronic disease.</div>
+      <div class="tool-verdict verdict-yes">✓ Strongly recommended — supplements pharmacist review</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-cat">General Purpose LLMs</div>
+      <div class="tool-name">ChatGPT / Claude / Gemini</div>
+      <div class="tool-use">Useful for self-education, creating patient education materials, structuring study notes, drafting protocols. Not a diagnostic tool. Never for patient-identifiable data.</div>
+      <div class="tool-verdict verdict-caution">⚡ Use carefully — know the limits</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🎓</div>
+      <div class="tool-cat">Continuing Education</div>
+      <div class="tool-name">AI-Powered Learning Platforms</div>
+      <div class="tool-use">Adaptive learning tools that personalize CEU content based on your specialty, gaps, and learning pace. Significantly more efficient than static module-based programs.</div>
+      <div class="tool-verdict verdict-yes">✓ Highly recommended for CPD</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">📷</div>
+      <div class="tool-cat">Clinical Assessment</div>
+      <div class="tool-name">AI-Assisted Image Analysis</div>
+      <div class="tool-use">Tools that assist in wound classification, pressure injury staging, and IV site assessment using smartphone cameras. Pilot stage in most hospitals — promising but requires validation.</div>
+      <div class="tool-verdict verdict-caution">⚡ Emerging — use as second opinion only</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🗂️</div>
+      <div class="tool-cat">Administrative</div>
+      <div class="tool-name">Scheduling & Staffing AI</div>
+      <div class="tool-use">Algorithms that optimize shift scheduling, predict staffing shortfalls based on census data, and reduce scheduling conflicts. Benefit to management; indirect benefit to nurses.</div>
+      <div class="tool-verdict verdict-yes">✓ Valuable — advocate for adoption</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🧬</div>
+      <div class="tool-cat">Diagnostic Support</div>
+      <div class="tool-name">AI Clinical Decision Support</div>
+      <div class="tool-use">Systems that suggest differential diagnoses or next best actions based on patient data. These are physician-facing tools — nurses should understand their outputs, not operate them independently.</div>
+      <div class="tool-verdict verdict-caution">⚡ Know it exists — understand scope</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🔮</div>
+      <div class="tool-cat">Experimental</div>
+      <div class="tool-name">AI Mental Health Screening</div>
+      <div class="tool-use">Sentiment analysis and behavioral pattern tools that attempt to flag mental health deterioration from speech or behavior. Promising in research — not validated for ward use. High risk of misclassification.</div>
+      <div class="tool-verdict verdict-no">✗ Not yet ready — maintain clinical lead</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 4 ─── -->
+  <h2><span class="h-num">04</span> The Genuine Advantages — What AI Does Change for Nurses</h2>
+
+  <p>
+    The case for nurses engaging with AI is not merely defensive — it is genuinely 
+    positive. When used appropriately, AI creates real gains in clinical quality, 
+    professional development, and the fundamental work of nursing: time with patients.
+  </p>
+
+  <div class="procon reveal">
+    <div class="procon-panel">
+      <div class="procon-head head-pro">Advantages</div>
+      <ul class="procon-list">
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>More time at the bedside.</strong> Administrative burden — documentation, scheduling, handover summaries — represents up to 35% of a nurse's shift. AI can reduce this materially, returning those hours to direct patient care.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>Earlier detection.</strong> Predictive early warning systems catch clinical deterioration an average of 4–6 hours earlier than observation-based detection alone. In critical conditions, this margin is life-altering.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>Reduced cognitive fatigue.</strong> Decision support tools reduce the number of independent judgments a nurse must make under cognitive saturation — without removing professional accountability from the human.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>Continuous learning support.</strong> AI-powered educational tools make evidence-based learning accessible, adaptive, and time-efficient — critical in a field where guidelines change constantly.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>Medication safety amplification.</strong> Interaction checkers and dosage verification tools add a computational layer of safety that catches errors human cross-checking misses — particularly in complex polypharmacy scenarios.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--teal)">✓</span><span><strong>Professional visibility.</strong> Nurses who can articulate clinical needs in AI-literate language become essential participants in digital transformation decisions — elevating the profession's voice in institutional strategy.</span></li>
+      </ul>
+    </div>
+    <div class="procon-panel">
+      <div class="procon-head head-con">Real Risks</div>
+      <ul class="procon-list">
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Automation complacency.</strong> When AI consistently performs well, nurses may reduce independent verification. The one time it fails — and it will fail — may not be caught until harm has occurred.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Algorithmic bias in clinical data.</strong> AI models trained on non-representative patient populations can produce inaccurate predictions for certain demographic groups — including underrepresented ethnicities, age groups, or comorbidity profiles.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Erosion of foundational skills.</strong> Over-reliance on decision-support tools can quietly erode a nurse's ability to reason clinically without assistance — a risk that compounds over years.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Data privacy exposure.</strong> Clinicians who input patient information into consumer AI tools — even with good intentions — may violate HIPAA, GDPR, or local data protection regulations with each interaction.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Alert fatigue amplification.</strong> Poorly calibrated AI warning systems that generate too many false positives train clinicians to dismiss alerts — including, eventually, the real ones.</span></li>
+        <li class="procon-item"><span class="pi-icon" style="color:var(--red)">✕</span><span><strong>Dehumanization of care.</strong> The measurable risk that increasing AI mediation in clinical interactions gradually shifts nursing culture toward data management — and away from the relational core of the profession.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 5 ─── -->
+  <h2><span class="h-num">05</span> What to Avoid — Non-Negotiable Boundaries</h2>
+
+  <p>
+    The advantages of AI in nursing practice are real. But there are specific 
+    behaviors that must be avoided — not as bureaucratic caution, but as genuine 
+    clinical and ethical protection for patients and practitioners alike.
+  </p>
+
+  <div class="avoid-list reveal">
+    <div class="avoid-item">
+      <div class="avoid-num">01</div>
+      <div>
+        <div class="avoid-title">Entering Identifiable Patient Data into Consumer AI Tools</div>
+        <div class="avoid-desc">Consumer large language models — including the most popular ones — are not healthcare-grade platforms. They do not meet clinical data protection standards. Inputting a patient's name, date of birth, diagnosis, or any combination of identifiable attributes into these tools is a privacy violation, regardless of how helpful the output appears.</div>
+        <div class="avoid-why">⚠ Clinical-grade AI tools exist specifically for healthcare use. Use those — or anonymize entirely before prompting a general tool.</div>
+      </div>
+    </div>
+    <div class="avoid-item">
+      <div class="avoid-num">02</div>
+      <div>
+        <div class="avoid-title">Using AI Output as a Substitute for Clinical Judgment</div>
+        <div class="avoid-desc">An AI-generated risk score, diagnosis suggestion, or care recommendation is a data point — not a decision. The nurse retains full professional accountability for every action taken in care. "The AI said so" is not a defensible position in a clinical adverse event review, and it should never be the final word in a bedside assessment.</div>
+        <div class="avoid-why">⚠ Integrate AI outputs with your own assessment. They inform judgment — they do not replace it.</div>
+      </div>
+    </div>
+    <div class="avoid-item">
+      <div class="avoid-num">03</div>
+      <div>
+        <div class="avoid-title">Documenting AI-Generated Text Without Review</div>
+        <div class="avoid-desc">Using AI to draft clinical notes and inserting them directly into a patient record — without reading, verifying, and taking responsibility for every word — is a documentation integrity failure. AI-generated clinical text can contain hallucinations: confident-sounding information that is factually wrong. In a medical record, this creates both a patient safety risk and a professional liability.</div>
+        <div class="avoid-why">⚠ Read everything before you sign it. AI drafts are starting points, not finished documents.</div>
+      </div>
+    </div>
+    <div class="avoid-item">
+      <div class="avoid-num">04</div>
+      <div>
+        <div class="avoid-title">Dismissing Low-Scoring AI Alerts Without Clinical Re-Evaluation</div>
+        <div class="avoid-desc">Alert fatigue is real, and AI systems that fire too frequently train clinicians to dismiss them habitually. But systematic dismissal without a brief clinical re-evaluation of the patient is dangerous. The correct response to a low-confidence alert is not ignorance — it is a 60-second targeted reassessment and a documented rationale for dismissal.</div>
+        <div class="avoid-why">⚠ Develop a personal protocol for alert triage. The habit of brief verification protects patients and protects you professionally.</div>
+      </div>
+    </div>
+    <div class="avoid-item">
+      <div class="avoid-num">05</div>
+      <div>
+        <div class="avoid-title">Allowing AI to Mediate Human Moments in Care</div>
+        <div class="avoid-desc">There is a class of interactions in nursing that must remain completely human: breaking difficult news, responding to a patient in crisis, comforting a family facing loss, assessing psychological suffering. AI scripting, AI-suggested communication, and chatbot-first triage should never be the primary interface for these moments. The therapeutic relationship depends on authentic human presence — not augmented empathy.</div>
+        <div class="avoid-why">⚠ Know which conversations require full human presence. Protect them fiercely, even as automation surrounds them.</div>
+      </div>
+    </div>
+    <div class="avoid-item">
+      <div class="avoid-num">06</div>
+      <div>
+        <div class="avoid-title">Assuming AI Is Neutral or Unbiased</div>
+        <div class="avoid-desc">Every AI model reflects the data it was trained on — and that data contains the biases, inequities, and historical underrepresentation of the healthcare system that produced it. Pulse oximeters were calibrated primarily on lighter skin tones. Sepsis models were trained on datasets overrepresenting certain demographics. Assuming an AI tool performs equally well across all patient populations is not just incorrect — it can cause harm.</div>
+        <div class="avoid-why">⚠ Ask your institution what population the AI tools deployed in your ward were validated on. If they cannot answer — that is itself the answer.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- inline image 2 -->
+  <figure class="inline-img reveal">
+    <img
+      src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1000&q=80&fit=crop"
+      alt="Nurse attentively listening and speaking with an elderly patient in a warm clinical setting"
+    >
+    <figcaption>The most important things nurses do cannot be automated — they require presence, judgment, and humanity · Unsplash</figcaption>
+  </figure>
+
+  <!-- ─── SECTION 6 ─── -->
+  <h2><span class="h-num">06</span> What AI Will Never Replace — Protect These Qualities</h2>
+
+  <p>
+    The discourse around AI and nursing has focused heavily on what AI can do. 
+    The more important conversation is about what only humans can do — and why 
+    nurses should be actively strengthening those capacities, not letting them 
+    quietly atrophy in an environment of increasing automation.
+  </p>
+  <p>
+    These are not soft skills. They are the <strong>clinical core</strong> of the 
+    nursing profession — and they are, paradoxically, becoming more valuable as AI 
+    becomes more capable, not less.
+  </p>
+
+  <div class="human-strip reveal">
+    <div class="human-strip-title">Irreplaceable Human Clinical Capacities</div>
+    <div class="human-strip-sub">// capabilities that AI measurably cannot replicate in clinical nursing — 2025 and beyond</div>
+    <div class="human-pills">
+      <div class="human-pill"><div class="hp-dot"></div>Therapeutic Presence</div>
+      <div class="human-pill"><div class="hp-dot"></div>Non-Verbal Assessment</div>
+      <div class="human-pill"><div class="hp-dot"></div>Clinical Intuition</div>
+      <div class="human-pill"><div class="hp-dot"></div>Contextual Judgment</div>
+      <div class="human-pill"><div class="hp-dot"></div>Ethical Reasoning</div>
+      <div class="human-pill"><div class="hp-dot"></div>Cultural Humility</div>
+      <div class="human-pill"><div class="hp-dot"></div>Grief Companionship</div>
+      <div class="human-pill"><div class="hp-dot"></div>Trust-Building</div>
+      <div class="human-pill"><div class="hp-dot"></div>Moral Courage</div>
+      <div class="human-pill"><div class="hp-dot"></div>Advocacy for Vulnerability</div>
+      <div class="human-pill"><div class="hp-dot"></div>Creative Problem-Solving</div>
+      <div class="human-pill"><div class="hp-dot"></div>Situational Awareness</div>
+    </div>
+  </div>
+
+  <p>
+    Of these, <strong>clinical intuition</strong> deserves particular attention. 
+    It is the pattern recognition that experienced nurses develop through years of 
+    physical proximity to patients — the subtle changes in skin tone, breathing 
+    rhythm, facial affect, and physiological presentation that occur before any 
+    measurable metric changes. It is what nurses mean when they say, "I don't know 
+    what it is, but something is wrong with this patient."
+  </p>
+  <p>
+    Research consistently validates this intuition as a clinically significant 
+    predictor of adverse events. AI cannot replicate it — not because machines 
+    lack sensors, but because embodied clinical intuition develops through the 
+    kind of sustained, attentive human presence at the bedside that no algorithm 
+    can simulate.
+  </p>
+  <p>
+    The risk of the AI era is that nurses spend less time at bedsides — and therefore 
+    develop this intuition more slowly. <em>That is the loss worth protecting against.</em>
+  </p>
+
+  <!-- ─── SECTION 7 ─── -->
+  <h2><span class="h-num">07</span> A Practical Starting Point: What to Do This Month</h2>
+
+  <p>
+    Abstract awareness of AI is not enough. The nurses who will thrive in this 
+    transition are those who begin building practical literacy now, through small 
+    deliberate actions, before the technology is mandated and the learning curve 
+    becomes pressure instead of growth.
+  </p>
+
+  <div class="stat-row reveal">
+    <div class="stat-box">
+      <div class="stat-box-n purple">72%</div>
+      <div class="stat-box-l">of nurses report receiving no formal training on AI tools deployed in their workplace</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-n blue">4–6h</div>
+      <div class="stat-box-l">earlier detection of clinical deterioration with AI-assisted early warning vs observation alone</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-n gold">35%</div>
+      <div class="stat-box-l">of nursing shift time currently spent on administrative tasks — the primary target for responsible AI reduction</div>
+    </div>
+  </div>
+
+  <!-- photo frame -->
+  <figure class="photo-frame reveal">
+    <div class="photo-frame-label">Learning in Practice</div>
+    <img
+      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&q=80&fit=crop"
+      alt="Small team of professionals gathered around a laptop screen in a collaborative learning setting"
+    >
+    <figcaption>Peer learning around AI tools is often more effective than formal training — find or form a group in your ward.</figcaption>
+  </figure>
+
+  <h3>Immediate actions — this month:</h3>
+  <ul class="checklist">
+    <li><span class="cl-icon">▸</span><span>Identify every AI or algorithmic tool already active in your ward. You may be surprised how many there are — ask your charge nurse or IT team for a complete list.</span></li>
+    <li><span class="cl-icon">▸</span><span>For each tool, ask one question: <em>"What population was this validated on, and does that include patients like ours?"</em> The answer will calibrate your trust appropriately.</span></li>
+    <li><span class="cl-icon">▸</span><span>Spend 30 minutes per week using a general-purpose AI assistant for personal professional development — study support, literature summaries, protocol questions. Build familiarity with its limitations in a low-stakes context.</span></li>
+    <li><span class="cl-icon">▸</span><span>Document one instance per shift where AI output aligned with your clinical assessment, and one where it diverged. After four weeks, you will have a precise personal understanding of where the tool is reliable and where you need to override it.</span></li>
+  </ul>
+
+  <h3>Ongoing practices — this year:</h3>
+  <ul class="checklist">
+    <li><span class="cl-icon">▸</span><span>Complete at least one structured course in health data literacy or AI in healthcare. Free courses exist from WHO, Coursera, and several nursing associations — no cost barrier.</span></li>
+    <li><span class="cl-icon">▸</span><span>Establish a personal AI policy: which categories of clinical question you will and will not bring to an AI tool, and what your verification protocol looks like before acting on any AI output.</span></li>
+    <li><span class="cl-icon">▸</span><span>Actively protect your bedside time. If AI is absorbing administrative hours, direct that recovered time to patients — not to consuming more AI outputs. Time at the bedside is where clinical intuition is built and maintained.</span></li>
+  </ul>
+
+  <div class="callout callout-purple reveal">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">The Most Important Mindset Shift</div>
+      <div class="callout-text">
+        Do not approach AI as something that is happening <em>to</em> nursing. 
+        Approach it as a tool that nursing professionals must actively shape — 
+        through participation in procurement decisions, through clinical feedback 
+        on deployed tools, through professional bodies setting standards for 
+        AI validation and accountability in clinical settings. 
+        The nurses who are in those rooms will determine what AI in healthcare 
+        looks like for the next generation.
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">
+    <div class="divider-sym">◆</div>
+  </div>
+
+  <h2><span class="h-num">08</span> Closing — The Profession Remains Human</h2>
+
+  <p>
+    Nursing was built on a premise that no algorithm has yet managed to encode: 
+    that human beings in their most vulnerable moments deserve to be met by another 
+    human being — present, attentive, capable, and caring.
+  </p>
+  <p>
+    AI will change how nurses document. It will change how deterioration is detected. 
+    It will change the administrative landscape of clinical practice in ways that, 
+    done well, can genuinely free time and reduce burnout. These are real gains 
+    worth pursuing.
+  </p>
+  <p>
+    But the nurse who holds the hand of a patient who cannot speak, who reads the 
+    fear in a family's face before they have found the words for it, who makes the 
+    call at 4 AM that something is wrong before the monitor agrees — that nurse is 
+    not a data processor. She is the reason healthcare exists.
+  </p>
+  <p>
+    <strong>AI can serve that nurse. It cannot replace her.</strong> And the most 
+    important thing any nurse can do in this era is to know, with clarity and 
+    confidence, exactly where that line is — and refuse to let it move.
+  </p>
+
+  <div class="pullquote reveal">
+    <div class="pullquote-text">
+      "Use AI to do less paperwork and more nursing. 
+       That is the entirety of the correct strategy. 
+       Everything else is implementation detail."
+    </div>
+    <div class="pullquote-attr">— M. Arief Fardhiansyah · RN, HIS Officer</div>
+  </div>
+
+  <!-- Tags -->
+  <div class="tags-row">
+    <span class="post-tag">Artificial Intelligence</span>
+    <span class="post-tag">Nursing</span>
+    <span class="post-tag">Digital Health</span>
+    <span class="post-tag">Clinical Skills</span>
+    <span class="post-tag">AI Ethics</span>
+    <span class="post-tag">Patient Safety</span>
+    <span class="post-tag">Healthcare Technology</span>
+    <span class="post-tag">Indonesia</span>
+    <span class="post-tag">Professional Development</span>
+  </div>
+
+</article>
+
+<!-- AUTHOR CARD -->
+<div class="author-card reveal" style="grid-template-columns:1fr">
+  <div>
+    <div class="author-card-name">Ns. M. Arief Fardhiansyah, S.Kep</div>
+    <div class="author-card-role">HIS Officer · Data & BI Analyst · Registered Nurse · South Jakarta, Indonesia</div>
+    <div class="author-card-bio">
+      A registered nurse and healthcare information systems professional writing at the 
+      intersection of clinical care and emerging technology. Focused on helping nursing 
+      professionals navigate digital transformation with both technical fluency and 
+      clinical integrity. Currently exploring AI literacy in healthcare as a discipline 
+      distinct from general digital skills.
+    </div>
+    <div class="author-card-links">
+      <a href="https://linkedin.com/in/fardianarief" target="_blank" class="author-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://wa.me/6282388308450?text=Halo%20Arief!%20Saya%20membaca%20artikel%20Anda%20tentang%20AI%20dan%20keperawatan%20dan%20ingin%20berdiskusi." target="_blank" class="author-link author-link-wa">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="https://fardianarief.github.io/My-Portfolio/" class="author-link">← Portfolio</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cta-inner reveal">
+    <div class="cta-eyebrow">Continue the Conversation</div>
+    <h2 class="cta-title">Questions About AI<br><em>in Your Clinical Practice?</em></h2>
+    <p class="cta-sub">
+      Whether you are a nurse navigating a new AI tool in your ward, a healthcare 
+      manager evaluating digital investments, or an institution looking to build 
+      AI literacy into clinical training — this conversation matters, and it benefits 
+      from clinical voices at the table.
+    </p>
+    <div class="cta-btns">
+      <a href="https://wa.me/6282388308450?text=Halo%20Arief!%20Saya%20ingin%20berdiskusi%20tentang%20AI%20dalam%20praktik%20keperawatan." target="_blank" class="btn btn-purple">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Discuss via WhatsApp
+      </a>
+      <a href="https://linkedin.com/in/fardianarief" target="_blank" class="btn btn-gold">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        Connect on LinkedIn
+      </a>
+      <a href="https://fardianarief.github.io/My-Portfolio/" class="btn btn-outline">← Back to Portfolio</a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="article-wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">M. Arief <em>Fardhiansyah</em></div>
+      <div class="footer-copy">© 2025 · An independent perspective on nursing and technology.</div>
+      <a href="https://fardianarief.github.io/My-Portfolio/" class="footer-back">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Portfolio
+      </a>
+    </div>
+  </div>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+var themeBtn=document.getElementById('themeBtn');
+var html=document.documentElement;
+function getTheme(){return html.getAttribute('data-theme')||'dark'}
+function setTheme(t){html.setAttribute('data-theme',t);themeBtn.textContent=t==='dark'?'🌙':'☀️';try{sessionStorage.setItem('af-theme',t)}catch(e){}}
+setTheme(getTheme());
+themeBtn.onclick=function(){setTheme(getTheme()==='dark'?'light':'dark')};
+window.addEventListener('scroll',function(){
+  document.getElementById('btt').classList.toggle('show',window.scrollY>500);
+  var h=document.documentElement;
+  var pct=(window.scrollY/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById('progressBar').style.width=Math.min(pct,100)+'%';
+},{passive:true});
+var ro=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el)});
+</script>
+</body>
+</html>
